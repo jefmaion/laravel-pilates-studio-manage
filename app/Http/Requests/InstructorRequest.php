@@ -6,7 +6,8 @@ use App\Models\Instructor;
 use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
 
-class InstructorRequest extends FormRequest
+class InstructorRequest extends UserRequest
+
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +26,19 @@ class InstructorRequest extends FormRequest
      */
     public function rules()
     {
-        $instructor = Instructor::find($this->student);
 
-        $id = ($instructor) ? $instructor->user->id : 0;
+
+        return parent::rules();
+
+        // $instructor = Instructor::find($this->student);
+
+        // $id = ($instructor) ? $instructor->user->id : 0;
         
-        return [
-            'user.name' => 'required',
-            'user.gender' => 'required',
-            'user.phone' => 'required'
-            // 'user.email' => 'required|email|unique:users,email,'.$id,
-        ];
+        // return [
+        //     'user.name' => 'required',
+        //     'user.gender' => 'required',
+        //     'user.phone' => 'required'
+        //     // 'user.email' => 'required|email|unique:users,email,'.$id,
+        // ];
     }
 }
