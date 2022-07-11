@@ -27,7 +27,7 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Nome', 'Telefone', 'Email', 'Ações']" :config="[ 'order' => [[1, 'asc']], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Nome', 'Telefone', 'Email', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($students as $student)
             <tr>
               

@@ -24,7 +24,7 @@
     </div>
 
 
-    <x-adminlte-modal id="modalMin{{ $dataId }}" title="Excluir" icon="fas fa-bolt" theme="danger">
+    <x-adminlte-modal id="modalMin{{ $dataId }}" v-centered title="Excluir" icon="fas fa-trash" theme="danger">
         Deseja excluir esse registro?
         <x-slot name="footerSlot">
             <form action="{{ $urlDelete }}" method="post">

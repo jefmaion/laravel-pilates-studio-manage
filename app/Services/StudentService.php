@@ -18,13 +18,9 @@ class StudentService extends BaseService
         $this->userService = $userService;
     }
 
-    public function find($id) {
-        return $this->student->with('user')->find($id);
-    }
-
 
     public function listStudents() {
-        return $this->listAll();
+        return $this->listLasts();
     }
 
     public function create($data) { 

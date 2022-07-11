@@ -21,6 +21,10 @@ class BaseService {
         return $this->model->all();
     }
 
+    public function listLasts() {
+        return $this->model->latest()->get();
+    }
+
     public function create($data) {
         return $this->model->create($data);
     }

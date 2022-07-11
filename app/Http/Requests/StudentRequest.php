@@ -30,9 +30,9 @@ class StudentRequest extends FormRequest
         
         return [
             'user.name' => 'required',
-            'user.zipcode' => 'required',
             'user.gender' => 'required',
-            'user.email' => 'required|email|unique:users,email,'.$id,
+            'user.phone' => 'required'
+            // 'user.email' => 'required|email|unique:users,email,'.$id,
         ];
     }
 }

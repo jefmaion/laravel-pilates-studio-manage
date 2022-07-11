@@ -13,6 +13,7 @@
     <x-adminlte-input name="user[nickname]" label="Apelido" fgroup-class="col-3 col-lg-3 col-md-6 col-sm-12" enable-old-support value="{{ $user->nickname }}"  />
 
     <x-adminlte-select2 name="user[gender]" id="gender" label="Gender" fgroup-class="col-12 col-lg-3 col-md-3 col-sm-6" empty-option="Select an option..." > 
+        <option value=""></option>
         <x-adminlte-options :options="['M' => 'Masculino', 'F' => 'Feminino']" :selected="[old('gender') ?? $user->gender]"  />
     </x-adminlte-select2>
 
@@ -41,10 +42,12 @@
     <x-adminlte-input name="user[district]" label="Bairro" fgroup-class="col-12 col-lg-3 col-sm-6" enable-old-support value="{{ $user->district }}" />
     <x-adminlte-input name="user[city]" label="Cidade" fgroup-class="col-12 col-lg-4 col-sm-6" enable-old-support value="{{ $user->city }}" />
     <x-adminlte-input name="user[state]" label="Estado" fgroup-class="col-12  col-lg-2 col-sm-6" enable-old-support value="{{ $user->state }}" />
+
+    <x-adminlte-textarea name="user[comments]" rows="3" label="Observações" fgroup-class="col-12  col-lg-12 col-sm-6" enable-old-support>{{ $user->comments }}</x-adminlte-textarea>
 </div>
 
 <x-adminlte-button type="submit" label="Salvar" theme="success" icon="fas fa-lg fa-save"/>
-<x-package-button-link label="Voltar"  url="{{ route('student.index') }}" icon="fas fa-chevron-left" />
+<x-package-button-link label="Voltar" theme="light"  url="{{ route('student.index') }}" icon="fas fa-chevron-left" />
 
 
 
