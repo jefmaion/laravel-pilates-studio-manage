@@ -290,6 +290,7 @@ return [
             'text' => 'Professores',
             'url'  => 'instructor',
             'icon' => 'fas fa-fw fa-user-ninja',
+            'active' => ['instructor*']
         ],
 
         [

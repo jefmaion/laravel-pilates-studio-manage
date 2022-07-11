@@ -12,6 +12,10 @@ class BaseService {
         $this->model = $model;
     }
 
+    public function new() {
+        return new $this->model();
+    }
+
 
     public function find(int $id) {
         return $this->model->find($id);

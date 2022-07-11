@@ -43,11 +43,12 @@
     <x-adminlte-input name="user[city]" label="Cidade" fgroup-class="col-12 col-lg-4 col-sm-6" enable-old-support value="{{ $user->city }}" />
     <x-adminlte-input name="user[state]" label="Estado" fgroup-class="col-12  col-lg-2 col-sm-6" enable-old-support value="{{ $user->state }}" />
 
+        @yield('add')
+
     <x-adminlte-textarea name="user[comments]" rows="3" label="Observações" fgroup-class="col-12  col-lg-12 col-sm-6" enable-old-support>{{ $user->comments }}</x-adminlte-textarea>
 </div>
 
-<x-adminlte-button type="submit" label="Salvar" theme="success" icon="fas fa-lg fa-save"/>
-<x-package-button-link label="Voltar" theme="light"  url="{{ route('student.index') }}" icon="fas fa-chevron-left" />
+
 
 
 
