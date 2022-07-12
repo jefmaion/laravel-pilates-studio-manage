@@ -21,6 +21,9 @@ class DatabaseSeeder extends Seeder
 
         Student::factory(200)->create();
         Instructor::factory(3)->create();
-        $this->call([PlanSeeder::class]);
+        $this->call([
+            PlanSeeder::class,
+            PaymentMethodSeeder::class
+        ]);
     }
 }

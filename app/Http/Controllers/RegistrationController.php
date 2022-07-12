@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PaymentMethod;
 use App\Services\InstructorService;
+use App\Services\PaymentMethodService;
 use App\Services\PlanService;
 use App\Services\RegistrationService;
 use App\Services\StudentService;
@@ -15,13 +17,21 @@ class RegistrationController extends Controller
     protected $studentService;
     protected $planService;
     protected $instructorService;
+    protected $paymentMethodService;
 
-    public function __construct(RegistrationService $registrationService, StudentService $studentService, PlanService $planService, InstructorService $instructorService)
+    public function __construct(
+        RegistrationService $registrationService, 
+        StudentService $studentService, 
+        PlanService $planService, 
+        InstructorService $instructorService,
+        PaymentMethodService $paymentMethodService
+    )
     {
         $this->registrationService = $registrationService;
         $this->studentService = $studentService;
         $this->planService = $planService;
         $this->instructorService = $instructorService;
+        $this->paymentMethodService = $paymentMethodService;
     }
 
     /**
@@ -46,7 +56,8 @@ class RegistrationController extends Controller
         $students     = $this->studentService->listAll();
         $plans        = $this->planService->listAll();
         $instructors  = $this->instructorService->listAll();
-        return view('registration.create', compact('registration' ,'students', 'plans', 'instructors'));
+        $paymentMethods  = $this->paymentMethodService->listAll();
+        return view('registration.create', compact('registration' ,'students', 'plans', 'instructors', 'paymentMethods'));
     }
 
     /**
@@ -83,7 +94,9 @@ class RegistrationController extends Controller
         $registration = $this->registrationService->find($id);
         $students = $this->studentService->listAll();
         $plans = $this->planService->listAll();
-        return view('registration.edit', compact('students', 'plans','registration'));
+        $instructors  = $this->instructorService->listAll();
+        $paymentMethods  = $this->paymentMethodService->listAll();
+        return view('registration.edit', compact('registration' ,'students', 'plans', 'instructors', 'paymentMethods'));
 
     }
 
