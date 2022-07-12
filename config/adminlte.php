@@ -276,8 +276,9 @@ return [
 
         [
             'text' => 'Matrículas',
-            'url'  => 'admin/settings',
+            'url'  => 'registration',
             'icon' => 'fas fa-fw fa-address-book',
+            'active' => ['registration*']
         ],
 
         [
