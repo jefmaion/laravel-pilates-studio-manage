@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\InstructorService;
 use App\Services\PlanService;
 use App\Services\RegistrationService;
 use App\Services\StudentService;
@@ -13,12 +14,14 @@ class RegistrationController extends Controller
     protected $registrationService;
     protected $studentService;
     protected $planService;
+    protected $instructorService;
 
-    public function __construct(RegistrationService $registrationService, StudentService $studentService, PlanService $planService)
+    public function __construct(RegistrationService $registrationService, StudentService $studentService, PlanService $planService, InstructorService $instructorService)
     {
         $this->registrationService = $registrationService;
         $this->studentService = $studentService;
         $this->planService = $planService;
+        $this->instructorService = $instructorService;
     }
 
     /**
@@ -40,9 +43,10 @@ class RegistrationController extends Controller
     public function create()
     {
         $registration = $this->registrationService->new();
-        $students = $this->studentService->listAll();
-        $plans = $this->planService->listAll();
-        return view('registration.create', compact('registration' ,'students', 'plans'));
+        $students     = $this->studentService->listAll();
+        $plans        = $this->planService->listAll();
+        $instructors  = $this->instructorService->listAll();
+        return view('registration.create', compact('registration' ,'students', 'plans', 'instructors'));
     }
 
     /**

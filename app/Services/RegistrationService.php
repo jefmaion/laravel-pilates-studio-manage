@@ -23,6 +23,10 @@ class RegistrationService extends BaseService {
 
 
     public function createRegistration($data) {
+
+
+        dd($data);
+
         $plan = $this->planService->find($data['plan_id']);
         $data['date_end'] = date('Y-m-d', strtotime($data['date_start'] . '+' . $plan->duration . ' months'));
         return $this->create($data);

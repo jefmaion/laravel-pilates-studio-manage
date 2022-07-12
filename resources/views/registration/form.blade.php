@@ -38,78 +38,47 @@
         <hr class="mt-0">
     </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Segunda-Feira</th>
-                <th>Terça-Feira</th>
-                <th>Quarta-Feira</th>
-                <th>Quinta-Feira</th>
-                <th>Sexta-Feira</th>
-                <th>Sábado-Feira</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
+    <div class="col-12">
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>Segunda-Feira</th>
+                    <th>Terça-Feira</th>
+                    <th>Quarta-Feira</th>
+                    <th>Quinta-Feira</th>
+                    <th>Sexta-Feira</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody>
                 
-                </td>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
-                
-                </td>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
-                
-                </td>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
-                
-                </td>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
-                
-                </td>
-                <td>
-                    <x-adminlte-select2 name="student_id" id="student_id" empty-option="Select an option..." > 
-                        <option value=""></option>
-                        @foreach($students as $student)
-                        <x-adminlte-options :options="[$student->id => $student->user->name]" :selected="$registration->student_id"  />
-                        @endforeach
-                    </x-adminlte-select2>
-                
-                </td>
-            </tr>
-           
-        </tbody>
-    </table>
-
+                <tr>
+                    @for($i=1;$i<=6;$i++)
+                    <td>
+                        <x-adminlte-select2 name="time_class[{{ $i }}]" id="time-class-{{ $i }}" empty-option="Select an option..." > 
+                            <option value=""></option>
+                            @for($j=7;$j<=20;$j++)
+                            <x-adminlte-options :options="[$j.':00:00' => $j.':00:00']"   />
+                            @endfor
+                        </x-adminlte-select2>
+    
+                        <x-adminlte-select2 name="instructor_id[{{ $i }}]" id="instructor_id_{{ $i }}" empty-option="Select an option..." > 
+                            <option value=""></option>
+                            @foreach($instructors as $instructor)
+                            <x-adminlte-options :options="[$instructor->id => $instructor->user->name]"   />
+                            @endforeach
+                        </x-adminlte-select2>
+                    
+                    </td>
+                    @endfor
+                </tr>
+    
+              
+               
+            </tbody>
+        </table>
+    
+    </div>
 
 </div>
 
