@@ -297,6 +297,7 @@ return [
             'text' => 'Planos',
             'url'  => 'plan',
             'icon' => 'fas fa-fw fa-book',
+            'active' => ['plan*']
         ],
 
         [
