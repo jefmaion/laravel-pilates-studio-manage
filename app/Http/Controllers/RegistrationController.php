@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegistrationRequest;
 use App\Models\PaymentMethod;
 use App\Services\InstructorService;
 use App\Services\PaymentMethodService;
 use App\Services\PlanService;
 use App\Services\RegistrationService;
 use App\Services\StudentService;
+use App\Services\WeekService;
 use Illuminate\Http\Request;
 
 class RegistrationController extends Controller
@@ -18,13 +20,15 @@ class RegistrationController extends Controller
     protected $planService;
     protected $instructorService;
     protected $paymentMethodService;
+    protected $weekdayService;
 
     public function __construct(
         RegistrationService $registrationService, 
         StudentService $studentService, 
         PlanService $planService, 
         InstructorService $instructorService,
-        PaymentMethodService $paymentMethodService
+        PaymentMethodService $paymentMethodService,
+        WeekService $weekdayService
     )
     {
         $this->registrationService = $registrationService;
@@ -32,6 +36,7 @@ class RegistrationController extends Controller
         $this->planService = $planService;
         $this->instructorService = $instructorService;
         $this->paymentMethodService = $paymentMethodService;
+        $this->weekdayService = $weekdayService;
     }
 
     /**
@@ -55,9 +60,8 @@ class RegistrationController extends Controller
         $registration = $this->registrationService->new();
         $students     = $this->studentService->listAll();
         $plans        = $this->planService->listAll();
-        $instructors  = $this->instructorService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
-        return view('registration.create', compact('registration' ,'students', 'plans', 'instructors', 'paymentMethods'));
+        return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods'));
     }
 
     /**
@@ -66,8 +70,9 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RegistrationRequest $request)
     {
+
         $this->registrationService->createRegistration($request->except('token'));
         return redirect()->route('registration.index');
     }
@@ -107,7 +112,7 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(RegistrationRequest $request, $id)
     {
         $this->registrationService->updateRegistration($request->except(['_method', '_token']), $id);
         return redirect()->route('registration.index');
@@ -123,5 +128,17 @@ class RegistrationController extends Controller
     {
         $this->registrationService->delete($id);
         return redirect()->route('registration.index');
+    }
+
+    public function week(Request $request) {
+        $req = $request->except('_token');
+
+
+        $index = $req['_index'];
+        $time  = $req['class_time'];
+        $instructor = $this->instructorService->find($req['instructor_id']);
+        $weekday = $this->weekdayService->find($req['class_week']);
+        
+        return view('registration.row', compact('index', 'instructor', 'weekday', 'time'))->render();
     }
 }

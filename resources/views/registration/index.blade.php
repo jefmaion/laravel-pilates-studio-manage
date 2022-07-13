@@ -27,12 +27,13 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Finaliza em', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Finaliza em', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($registrations as $registration)
             <tr>
               
                 <td>{{ $registration->student->user->name }}</td>
                 <td>{{ $registration->plan->name }}</td>
+                <td>{{ $registration->status }}</td>
                 <td>{{ $registration->date_end }}</td>
              
                 <td class="">
@@ -40,6 +41,9 @@
                         data-id="{{ $registration->id }}" 
                         url-edit="{{ route('registration.edit', $registration->id) }}" 
                         url-delete="{{ route('registration.destroy', $registration->id) }}" 
+                        :others="[
+                            ['divider','url' => '#','icon'=> 'fas fa-calendar','label' => 'Aulas']
+                        ]"
                     />
                 </td>
             </tr>

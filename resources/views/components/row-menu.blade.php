@@ -18,6 +18,27 @@
             Excluir
         </a>
 
+
+        @if(isset($others))
+
+            @foreach($others as $key => $other)
+
+                @if($key == 'divider')
+                <div class="dropdown-divider"></div>
+                @endif
+
+                @if(isset($other['header']))
+                <h6 class="dropdown-header text-left">{{ $other['header'] }}</h6>
+                @endif
+
+                <a class="dropdown-item" href="{{ $other['url'] }}">
+                    <i class="{{ $other['icon']}}"></i>
+                    {{ $other['label'] }}
+                </a>
+
+            @endforeach
+        @endif
+
       {{-- <a class="dropdown-item" href="#">Something else here</a>
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" href="#">Separated link</a> --}}

@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->timestamps();
 
             $table->unsignedBigInteger('registration_id')->nullable();
+            $table->unsignedBigInteger('student_id')->nullable();
             $table->unsignedBigInteger('payment_method_id')->nullable();
             $table->date('date')->nullable();
             $table->decimal('value', 10,2)->nullable();
@@ -29,6 +30,7 @@ class CreateTransactionsTable extends Migration
 
             $table->foreign('registration_id')->references('id')->on('registrations');
             $table->foreign('payment_method_id')->references('id')->on('payment_methods');
+            $table->foreign('student_id')->references('id')->on('students');
         });
     }
 

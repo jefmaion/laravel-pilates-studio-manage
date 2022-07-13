@@ -22,42 +22,34 @@ class RegistrationService extends BaseService {
 
     public function createRegistration($data) {
         $data = $this->prepareRegistrationData($data);
-        $registration = $this->create( $data['registration']);
+        $registration = $this->create( $data);
 
-        $this->saveWeekdayClass($registration, $data['weekclass']);
-        $this->generateTransactions($registration);
+        // $this->saveWeekdayClass($registration, $data['weekclass']);
+        // $this->generateTransactions($registration);
     }
 
 
     public function updateRegistration($data, $id) {
         $data = $this->prepareRegistrationData($data);
-        $this->update($data['registration'], $id);
+        $this->update($data, $id);
 
         $registration = $this->find($id);
-        $this->saveWeekdayClass($registration, $data['weekclass']);
-        $this->generateTransactions($registration);
+        // $this->saveWeekdayClass($registration, $data['weekclass']);
+        // $this->generateTransactions($registration);
     }
 
 
 
 
     private function prepareRegistrationData($data) {
-        $registrationData = $data['registration'];
-        $weekclassData = $data['weekclass'];
 
-        $plan = $this->planService->find($registrationData['plan_id']);
-        $registrationData['date_end'] = $this->calculateEndDateRegistration($registrationData['date_start'],$plan->duration);
 
-        $weekclassData = array_filter($weekclassData, function($item) {
-            if($item['class_time'] != "" || $item['instructor_id'] != "") {
-                return $item;
-            }
-        });
+        $plan = $this->planService->find($data['plan_id']);
+        $data['date_end'] = $this->calculateEndDateRegistration($data['date_start'],$plan->duration);
+        return $data;
 
-        return [
-            'registration' => $registrationData,
-            'weekclass'    => $weekclassData,
-        ];
+
+    
     }
 
     private function calculateEndDateRegistration($startDate, $monthsToAdd) {

@@ -10,17 +10,19 @@ class RowMenu extends Component
     public $dataId;
     public $urlEdit;
     public $urlDelete;
+    public $others;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($dataId=0, $urlEdit='', $urlDelete='')
+    public function __construct($dataId=0, $urlEdit='', $urlDelete='', $others=[])
     {
         $this->dataId = $dataId;
         $this->urlEdit = $urlEdit;
         $this->urlDelete= $urlDelete;
+        $this->others = $others;
     }
 
     /**

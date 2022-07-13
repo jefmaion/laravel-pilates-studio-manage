@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\RegistrationClassController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Auth;
@@ -29,4 +30,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('student', StudentController::class);
 Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
+
 Route::resource('registration', RegistrationController::class);

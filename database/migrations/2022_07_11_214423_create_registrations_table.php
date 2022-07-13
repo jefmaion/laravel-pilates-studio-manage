@@ -22,6 +22,7 @@ class CreateRegistrationsTable extends Migration
             $table->unsignedBigInteger('plan_id')->nullable();
             $table->date('date_start')->nullable();
             $table->date('date_end')->nullable();
+            $table->string('status',2)->nullable();
             $table->integer('expiration_day')->nullable();
             $table->decimal('value', 10,2)->nullable();
             $table->decimal('discount', 10,2)->nullable();
