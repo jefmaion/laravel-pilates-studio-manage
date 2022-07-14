@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
-use App\Models\Student;
 use App\Models\User;
 use App\Services\StudentService;
-use Illuminate\Http\Request;
+
 
 class StudentController extends Controller
 {
@@ -25,7 +24,7 @@ class StudentController extends Controller
     public function index()
     {
         $students = $this->student->listStudents();
-        return view('user.student.index', compact('students'));
+        return view('student.index', compact('students'));
 
     }
 
@@ -36,8 +35,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $user = new User();
-        return view('user.student.create', compact('user'));
+        $user = new $this->student->new();
+        return view('student.create', compact('user'));
     }
 
     /**
@@ -48,7 +47,6 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-
         $this->student->create($request->all());
         return redirect()->route('student.index');
     }
@@ -73,8 +71,12 @@ class StudentController extends Controller
     public function edit($id)
     {
         $student = $this->student->find($id);
-        
-        return view('user.student.edit', compact('student'));
+
+        if(!$student) {
+            return view('errors.data-not-found');
+        }
+
+        return view('student.edit', compact('student'));
     }
 
     /**
@@ -86,7 +88,6 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, $id)
     {
-
         $this->student->update($request->except(['_method', '_token']), $id);
         return redirect()->route('student.index');
     }

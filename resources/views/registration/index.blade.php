@@ -27,24 +27,70 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Finaliza em', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Início','Fim', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($registrations as $registration)
-            <tr>
+            <tr class="{{ ($registration->status == 'C') ? 'text-gray' : '' }}">
               
                 <td>{{ $registration->student->user->name }}</td>
-                <td>{{ $registration->plan->name }}</td>
-                <td>{{ $registration->status }}</td>
+                <td>{{ $registration->plan->name }} </td>
+                <td>
+                    <span class="badge badge-pill badge-{{ $registration->labelTheme }}">{{ $registration->labelStatus }}</span>
+                </td>
+                <td>{{ $registration->date_start }}</td>
                 <td>{{ $registration->date_end }}</td>
              
                 <td class="">
-                    <x-package-row-menu 
-                        data-id="{{ $registration->id }}" 
-                        url-edit="{{ route('registration.edit', $registration->id) }}" 
-                        url-delete="{{ route('registration.destroy', $registration->id) }}" 
-                        :others="[
-                            ['divider','url' => '#','icon'=> 'fas fa-calendar','label' => 'Aulas']
-                        ]"
-                    />
+                    <div class="btn-group">
+
+                        <a class="text-muted" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-bars"></i>
+                        </a>
+                    
+                        <div class="dropdown-menu">
+                    
+                            <h6 class="dropdown-header text-left">Ações</h6>
+                    
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
+                                <i class="fas fa-edit"></i>
+                                Cancelar Matrícula
+                            </a>
+{{--                     
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ $registration->id }}">
+                                <i class="fas fa-trash-alt"></i>
+                                Excluir
+                            </a> --}}
+
+                        </div>
+                    
+                    
+                        <x-adminlte-modal id="modal-delete-{{ $registration->id }}" v-centered title="Excluir" icon="fas fa-trash" theme="danger">
+                            Deseja excluir esse registro?
+                            <x-slot name="footerSlot">
+                                <form action="{{ route('registration.destroy', $registration) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-adminlte-button type="submit" icon="fa fa-trash" theme="danger" label="Excluir"/>
+                                </form>
+                    
+                                <x-adminlte-button theme="light" icon="fa fa-times"  label="Fechar" data-dismiss="modal"/>
+                            </x-slot>
+                        </x-adminlte-modal>
+
+                        <form action="{{ route('registration.update', $registration) }}" method="post">    
+                            <x-adminlte-modal id="modal-cancel-{{ $registration->id }}" v-centered title="Cancelar Matrícula" icon="fas fa-trash" theme="danger">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="C">
+                                <x-adminlte-textarea name="cancel_comments" rows="3" fgroup-class="col-12  col-lg-12 col-sm-6" enable-old-support></x-adminlte-textarea>
+                                <x-slot name="footerSlot">
+                                        <x-adminlte-button type="submit" icon="fa fa-trash" theme="danger" label="Cancelar"/>
+                                    </form>
+                        
+                                    <x-adminlte-button theme="light" icon="fa fa-times"  label="Fechar" data-dismiss="modal"/>
+                                </x-slot>
+                            </x-adminlte-modal>
+                        </form>
+                    </div>
                 </td>
             </tr>
         @endforeach

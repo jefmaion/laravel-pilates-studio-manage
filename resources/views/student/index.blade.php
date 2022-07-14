@@ -39,6 +39,9 @@
                         data-id="{{ $student->id }}" 
                         url-edit="{{ route('student.edit', $student->id) }}" 
                         url-delete="{{ route('student.destroy', $student->id) }}" 
+                        :others="[
+                            ['divider','url' => route('student.class.index', $student),'icon'=> 'fas fa-calendar','label' => 'Aulas']
+                        ]"
                     />
                 </td>
             </tr>

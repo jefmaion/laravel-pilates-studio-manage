@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Models\PaymentMethod;
-use App\Services\InstructorService;
 use App\Services\PaymentMethodService;
 use App\Services\PlanService;
 use App\Services\RegistrationService;
@@ -12,13 +11,13 @@ use App\Services\StudentService;
 use App\Services\WeekService;
 use Illuminate\Http\Request;
 
+
 class RegistrationController extends Controller
 {
 
     protected $registrationService;
     protected $studentService;
     protected $planService;
-    protected $instructorService;
     protected $paymentMethodService;
     protected $weekdayService;
 
@@ -26,17 +25,15 @@ class RegistrationController extends Controller
         RegistrationService $registrationService, 
         StudentService $studentService, 
         PlanService $planService, 
-        InstructorService $instructorService,
         PaymentMethodService $paymentMethodService,
         WeekService $weekdayService
-    )
-    {
+    ) {
         $this->registrationService = $registrationService;
         $this->studentService = $studentService;
         $this->planService = $planService;
-        $this->instructorService = $instructorService;
         $this->paymentMethodService = $paymentMethodService;
         $this->weekdayService = $weekdayService;
+
     }
 
     /**
@@ -50,6 +47,8 @@ class RegistrationController extends Controller
         return view('registration.index', compact('registrations'));
     }
 
+    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -57,9 +56,9 @@ class RegistrationController extends Controller
      */
     public function create()
     {
-        $registration = $this->registrationService->new();
-        $students     = $this->studentService->listAll();
-        $plans        = $this->planService->listAll();
+        $registration    = $this->registrationService->new();
+        $students        = $this->studentService->listAll();
+        $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
         return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods'));
     }
@@ -72,7 +71,6 @@ class RegistrationController extends Controller
      */
     public function store(RegistrationRequest $request)
     {
-
         $this->registrationService->createRegistration($request->except('token'));
         return redirect()->route('registration.index');
     }
@@ -96,12 +94,11 @@ class RegistrationController extends Controller
      */
     public function edit($id)
     {
-        $registration = $this->registrationService->find($id);
-        $students = $this->studentService->listAll();
-        $plans = $this->planService->listAll();
-        $instructors  = $this->instructorService->listAll();
+        $registration    = $this->registrationService->find($id);
+        $students        = $this->studentService->listAll();
+        $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
-        return view('registration.edit', compact('registration' ,'students', 'plans', 'instructors', 'paymentMethods'));
+        return view('registration.edit', compact('registration' ,'students', 'plans',  'paymentMethods'));
 
     }
 
@@ -130,15 +127,4 @@ class RegistrationController extends Controller
         return redirect()->route('registration.index');
     }
 
-    public function week(Request $request) {
-        $req = $request->except('_token');
-
-
-        $index = $req['_index'];
-        $time  = $req['class_time'];
-        $instructor = $this->instructorService->find($req['instructor_id']);
-        $weekday = $this->weekdayService->find($req['class_week']);
-        
-        return view('registration.row', compact('index', 'instructor', 'weekday', 'time'))->render();
-    }
 }

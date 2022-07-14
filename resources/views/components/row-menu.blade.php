@@ -57,4 +57,5 @@
             <x-adminlte-button theme="light" icon="fa fa-times"  label="Fechar" data-dismiss="modal"/>
         </x-slot>
     </x-adminlte-modal>
-  </div>
+    
+</div>

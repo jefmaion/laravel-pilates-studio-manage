@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\RegistrationClassController;
@@ -28,6 +29,9 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('student', StudentController::class);
+Route::resource('student.class', ClassesController::class);
+
+
 Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
 

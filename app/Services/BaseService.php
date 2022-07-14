@@ -18,7 +18,13 @@ class BaseService {
 
 
     public function find(int $id) {
-        return $this->model->find($id);
+        $data = $this->model->find($id);
+
+        if(!$data) {
+            return false;
+        }
+        
+        return $data;
     }
 
     public function listAll() {

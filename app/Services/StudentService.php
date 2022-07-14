@@ -10,12 +10,14 @@ class StudentService extends BaseService
 
     protected $student;
     protected $userService;
+    protected $classService;
 
-    public function __construct(Student $student, UserService $userService)
+    public function __construct(Student $student, UserService $userService , ClassesService $classService)
     {   
         parent::__construct($student);
         $this->student = $student;
         $this->userService = $userService;
+        $this->classService = $classService;
     }
 
 
@@ -32,6 +34,7 @@ class StudentService extends BaseService
         $student = $this->find($id);
         return $student->user()->update($data['user']);
     }
-
+    
+    
 
 }

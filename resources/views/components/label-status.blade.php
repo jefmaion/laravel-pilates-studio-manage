@@ -1,0 +1,1 @@
+<span class="badge badge-pill badge-{{ $theme  }}">{{ $label }}</span>

@@ -6,7 +6,6 @@ use App\Http\Requests\InstructorRequest;
 use App\Models\Instructor;
 use App\Models\User;
 use App\Services\InstructorService;
-use Illuminate\Http\Request;
 
 class InstructorController extends Controller
 {
@@ -26,7 +25,7 @@ class InstructorController extends Controller
     public function index()
     {
         $instructors = $this->instructorService->listInstructors();
-        return view('user.instructor.index', compact('instructors'));
+        return view('instructor.index', compact('instructors'));
     }
 
     /**
@@ -38,7 +37,7 @@ class InstructorController extends Controller
     {
         $user = new User();
         $instructor = new Instructor();
-        return view('user.instructor.create', compact('user', 'instructor'));
+        return view('instructor.create', compact('user', 'instructor'));
     }
 
     /**
@@ -74,7 +73,7 @@ class InstructorController extends Controller
     {
         $instructor = $this->instructorService->find($id);
         
-        return view('user.instructor.edit', compact('instructor'));
+        return view('instructor.edit', compact('instructor'));
     }
 
     /**
@@ -86,7 +85,6 @@ class InstructorController extends Controller
      */
     public function update(InstructorRequest $request, $id)
     {
-
         $this->instructorService->update($request->except(['_method', '_token']), $id);
         return redirect()->route('instructor.index');
     }

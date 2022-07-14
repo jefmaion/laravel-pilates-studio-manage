@@ -16,6 +16,15 @@ class Registration extends Model
     ];
 
 
+    public function getLabelStatusAttribute() {
+        return ($this->status == 'A') ? 'Ativo' : 'Inativo';
+    }
+
+    public function getLabelThemeAttribute() {
+        return ($this->status == 'A') ? 'success' : 'secondary';
+    }
+
+
 
     public function student() {
         return $this->belongsTo(Student::class);

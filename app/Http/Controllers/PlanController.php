@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PlanRequest;
 use App\Services\PlanService;
-use Illuminate\Http\Request;
 
 class PlanController extends Controller
 {

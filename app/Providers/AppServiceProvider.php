@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\View\Components\Breadcrumb;
 use App\View\Components\BreadcrumbItem;
 use App\View\Components\ButtonLink;
+use App\View\Components\LabelStatus;
 use App\View\Components\PageHeader;
 use App\View\Components\RowMenu;
 use Illuminate\Support\Facades\Blade;
@@ -37,5 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('package-button-link', ButtonLink::class);
         Blade::component('package-breadcrumb-item', BreadcrumbItem::class);
         Blade::component('package-row-menu', RowMenu::class);
+        Blade::component('package-label-status', LabelStatus::class);
     }
 }
