@@ -28,6 +28,7 @@ class CreateRegistrationsTable extends Migration
             $table->decimal('discount', 10,2)->nullable();
             $table->decimal('final_value', 10,2)->nullable();
             $table->text('comments')->nullable();
+            $table->dateTime('cancel_date')->nullable();
             $table->text('cancel_comments')->nullable();
 
             $table->foreign('student_id')->references('id')->on('students');

@@ -4,7 +4,7 @@
 
 @section('content_header')   
     <x-package-pageheader title="Matrículas" icon="fa fa-users" breadcrumb >
-        <x-package-breadcrumb-item label="Matrículas" href="{{ route('student.registration.index', $student) }}" />
+        <x-package-breadcrumb-item label="Matrículas" href="{{ route('registration.index') }}" />
         <x-package-breadcrumb-item label="Listagem de Matrículas" />
     </x-package-pageheader>
 @stop
@@ -14,11 +14,11 @@
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Nova Matrícula" url="#" icon="fas fa-plus" />
+            <x-package-button-link  theme="success" label="Nova Matrícula" url="{{ route('registration.create') }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">
-            
+                {{ count($registrations) }} matrículas(s) cadastrado(s)
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
     <hr>
 
     <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Fim', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
-        @foreach($student->registration as $registration)
+        @foreach($registrations as $registration)
             <tr class="{{ ($registration->status == 'C') ? 'text-gray' : '' }}">
               
                 <td>{{ $registration->student->user->name }}</td>

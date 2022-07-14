@@ -20,6 +20,10 @@ class RegistrationService extends BaseService {
     }
 
 
+    public function listRegistrationsByStudent($idStudent) {
+
+    }
+
     public function createRegistration($data) {
         $data = $this->prepareRegistrationData($data);
         $registration = $this->create( $data);
@@ -38,6 +42,9 @@ class RegistrationService extends BaseService {
         // $this->generateTransactions($registration);
     }
 
+    public function cancelRegistration($data, $id) {
+        return $this->update($data, $id);
+    }
 
 
 

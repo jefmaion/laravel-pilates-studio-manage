@@ -26,7 +26,7 @@ class RegistrationRequest extends FormRequest
         return [
             'student_id' => 'required',
             'plan_id' => 'required',
-            'payment_type_id' => 'required',
+            // 'payment_type_id' => 'required',
             'date_start' => 'required',
             'status' => 'required',
         ];

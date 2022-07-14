@@ -41,14 +41,10 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($studentId)
+    public function index()
     {
-
-        $student = $this->studentService->find($studentId);
-
-       
-        // $registrations = $this->registrationService->listAll();
-        return view('registration.index', compact('student'));
+        $registrations = $this->registrationService->listAll();
+        return view('registration.index', compact('registrations'));
     }
 
     
