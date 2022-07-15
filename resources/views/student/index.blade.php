@@ -34,21 +34,11 @@
                 <td>{{ $student->user->name }}</td>
                 <td>
 
-                    @if(count($student->registration) > 0)
-                    <span class="badge badge-pill badge-success">Ativo</span>
-                    @endif
+                  
                 </td>
                 <td>{{ $student->user->phone }}</td>
                 <td>{{ $student->user->email }}</td>
                 <td class="">
-                    {{-- <x-package-row-menu 
-                        data-id="{{ $student->id }}" 
-                        url-edit="{{ route('student.edit', $student->id) }}" 
-                        url-delete="{{ route('student.destroy', $student->id) }}" 
-                        :others="[
-                            ['divider','url' => route('student.class.index', $student),'icon'=> 'fas fa-calendar','label' => 'Aulas']
-                        ]"
-                    /> --}}
 
 
                     <div class="btn-group">
@@ -75,6 +65,11 @@
                             <a class="dropdown-item" href="{{ route('student.registration.index', $student) }}">
                                 <i class="fas fa-edit"></i>
                                 Matricula
+                            </a>
+
+                            <a class="dropdown-item" href="{{ route('student.class.index', $student) }}">
+                                <i class="fas fa-edit"></i>
+                                Aulas
                             </a>
                         </div>
                     

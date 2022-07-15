@@ -5,8 +5,7 @@
 @section('content_header')   
 <x-package-pageheader title="Aulas de {{ $student->user->nickname }}" icon="fa fa-users" breadcrumb >
     <x-package-breadcrumb-item label="Alunos" href="{{ route('student.index') }}" />
-    <x-package-breadcrumb-item label="{{ $student->user->name }}" />
-    <x-package-breadcrumb-item label="Listagem de Aulas" />
+    <x-package-breadcrumb-item label="Aulas de {{ $student->user->name }}" />
 </x-package-pageheader>
 @stop
 
@@ -15,7 +14,7 @@
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Novo Aluno" url="{{ route('student.create') }}" icon="fas fa-plus" />
+            <x-package-button-link  theme="success" label="Adicionar Aulas" url="{{ route('student.class.create', $student) }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">

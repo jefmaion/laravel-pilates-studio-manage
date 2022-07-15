@@ -17,7 +17,7 @@ class PaymentMethodSeeder extends Seeder
         $payments = [
             ['name' => 'Dinheiro'],
             ['name' => 'Pix'],
-            ['name' => 'Cartão Crédito'],
+            ['name' => 'Cartão Crédito', 'default' => 1],
             ['name' => 'Cartão Débito'],
             ['name' => 'Transferência'],
         ];

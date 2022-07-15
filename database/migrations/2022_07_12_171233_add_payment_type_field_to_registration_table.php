@@ -14,8 +14,8 @@ class AddPaymentTypeFieldToRegistrationTable extends Migration
     public function up()
     {
         Schema::table('registrations', function (Blueprint $table) {
-            $table->unsignedBigInteger('payment_type_id')->nullable();
-            $table->foreign('payment_type_id')->references('id')->on('payment_methods');
+            $table->unsignedBigInteger('payment_method_id')->nullable();
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods');
         });
     }
 
@@ -27,7 +27,7 @@ class AddPaymentTypeFieldToRegistrationTable extends Migration
     public function down()
     {
         Schema::table('registrations', function (Blueprint $table) {
-            $table->dropColumn('payment_type_id');
+            $table->dropColumn('payment_method_id');
         });
     }
 }

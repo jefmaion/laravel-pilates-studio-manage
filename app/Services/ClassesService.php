@@ -11,4 +11,9 @@ class ClassesService extends BaseService {
         parent::__construct($class);
     }
 
+
+    public function listStudentClasses($student) {
+        return $student->classes();
+    }
+
 }

@@ -5,17 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Classes;
 use App\Http\Requests\StoreClassesRequest;
 use App\Http\Requests\UpdateClassesRequest;
+use App\Services\ClassesService;
+use App\Services\InstructorService;
 use App\Services\StudentService;
+use App\Services\WeekService;
 
 class ClassesController extends Controller
 {
 
     protected $studentService;
     protected $classService;
+    protected $instructorService;
+    protected $weekService;
 
 
-    public function __construct(StudentService $studentService) {
+    public function __construct(
+        StudentService $studentService, 
+        ClassesService $classService, 
+        InstructorService $instructorService,
+        WeekService $weekService
+    ) {
         $this->studentService = $studentService;
+        $this->classService = $classService;
+        $this->instructorService = $instructorService;
+        $this->weekService = $weekService;
     }
 
     /**
@@ -35,9 +48,17 @@ class ClassesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($studentId)
     {
-        //
+        $student = $this->studentService->find($studentId);
+
+        $instructors = $this->instructorService->listAll();
+        $weeks = $this->weekService->list();
+
+        
+
+
+        return view('classes.create', compact('student', 'instructors', 'weeks'));
     }
 
     /**
@@ -48,7 +69,7 @@ class ClassesController extends Controller
      */
     public function store(StoreClassesRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

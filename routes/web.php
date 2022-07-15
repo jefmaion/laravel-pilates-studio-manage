@@ -6,6 +6,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\RegistrationClassController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\StudentController;
+use App\Models\Classes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,14 +29,18 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::resource('instructor', InstructorController::class);
+Route::resource('plan', PlanController::class);
+
 Route::resource('student', StudentController::class);
 Route::resource('student.class', ClassesController::class);
 Route::resource('student.registration', RegistrationController::class);
+Route::resource('student.class', ClassesController::class);
+
 Route::put('student/{student}/registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('student.registration.cancel');
 
 
-Route::resource('instructor', InstructorController::class);
-Route::resource('plan', PlanController::class);
+
 
 // Route::resource('registration', RegistrationController::class);
 Route::put('registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('registration.cancel');

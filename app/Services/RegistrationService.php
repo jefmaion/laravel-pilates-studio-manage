@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\Registration;
-
+use Carbon\Carbon;
 
 class RegistrationService extends BaseService {
 
@@ -21,50 +21,50 @@ class RegistrationService extends BaseService {
     }
 
 
-    public function listRegistrationsByStudent($idStudent) {
-        
-    }
-
     public function getActiveRegistration($student) {
         return $this->registration->where('student_id', $student->id)->where('status', 'A')->first();
     }
 
     public function createRegistration($student, $data) {
         $data = $this->prepareRegistrationData($data);
-        // $registration = $this->create( $data);
 
-        return $student->registration()->create($data);
+        $registration =  $student->registration()->create($data);
 
-        // $this->saveWeekdayClass($registration, $data['weekclass']);
-        // $this->generateTransactions($registration);
+        if($registration) {
+            $this->generateTransactions($registration);
+        }
     }
 
 
     public function updateRegistration(Registration $registration, $data) {
         $data = $this->prepareRegistrationData($data);
-        $this->update($data, $registration->id);
 
-        // $student->registration()->update($data);
-        // $registration = $this->find($id);
-        // $this->saveWeekdayClass($registration, $data['weekclass']);
-        // $this->generateTransactions($registration);
+        if($registration->update($data)) {
+            $this->generateTransactions($registration);
+        }
+
     }
 
-    public function cancelRegistration($data, $id) {
-        return $this->update($data, $id);
+    public function cancelRegistration(Registration $registration, $data) {
+        // return $this->update($data, $id);
+
+        $data['status'] = 'C';
+        $data['cancel_date'] = date('Y-m-d H:i:s');
+        $this->updateRegistration($registration, $data);
+
     }
 
 
 
     private function prepareRegistrationData($data) {
 
+        if(!isset($data['plan_id'])) {
+            return $data;
+        }
 
         $plan = $this->planService->find($data['plan_id']);
         $data['date_end'] = $this->calculateEndDateRegistration($data['date_start'],$plan->duration);
         return $data;
-
-
-    
     }
 
     private function calculateEndDateRegistration($startDate, $monthsToAdd) {
@@ -78,24 +78,25 @@ class RegistrationService extends BaseService {
 
     private function generateTransactions(Registration $registration) {
 
+        $registration->transactions()->whereNull('is_payed')->forceDelete();
 
-        $registration->transactions()->whereNull('is_payed')->delete();
+        $startMonth = Carbon::parse($registration->date_start)->floorMonth();
+        $endMonth   = Carbon::parse($registration->date_end)->floorMonth();
+        $numMonths  = $startMonth->diffInMonths($endMonth); 
 
-        $date = $registration->date_start;
-        $i = 1;
-        while($date < $registration->date_end) {
-
-            $registration->transactions()->create([
-                'payment_method_id' => $registration->payment_type_id,
-                'date' => $date,
-                'value' => $registration->final_value,
-                'type' => 1,
-                'description' => 'Mensalidade '.$i.' de ' . $registration->student->user->name,
-            ]);
-
-            $date = date('Y-m-d', strtotime($date . ' +1 months'));
-            $i++;
+        $transactions = [];
+ 
+        for($i=1; $i<= $numMonths; $i++) {
+            $transactions[] = [
+                'student_id'  => $registration->student->id,
+                'date'        => Carbon::parse($registration->date_start)->addMonths($i),
+                'value'       => $registration->final_value,
+                'type'        => 1,
+                'description' => '('.$i.' de '.$numMonths.') '  . $registration->student->user->name,
+            ];
         }
+
+        $registration->transactions()->createMany($transactions);
     }
 
 

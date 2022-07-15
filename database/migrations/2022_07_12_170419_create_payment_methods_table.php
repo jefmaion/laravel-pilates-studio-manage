@@ -19,6 +19,7 @@ class CreatePaymentMethodsTable extends Migration
             $table->softDeletes();
 
             $table->string('name', 200)->nullable();
+            $table->integer('default')->nullable();
         });
     }
 
