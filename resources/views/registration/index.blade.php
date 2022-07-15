@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')   
-    <x-package-pageheader title="Matrículas" icon="fa fa-users" breadcrumb >
+    <x-package-pageheader title="Matrículas de {{ $student->user->name }} " icon="fa fa-users" breadcrumb >
         <x-package-breadcrumb-item label="Matrículas" href="{{ route('student.registration.index', $student) }}" />
         <x-package-breadcrumb-item label="Listagem de Matrículas" />
     </x-package-pageheader>
@@ -14,7 +14,9 @@
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Nova Matrícula" url="#" icon="fas fa-plus" />
+            @if(!$registration)
+            <x-package-button-link  theme="success" label="Nova Matrícula" url="{{ route('student.registration.create', $student) }}" icon="fas fa-plus" />
+            @endif
         </div>
         <div class="col">
             <div class="text-muted text-right">
@@ -27,11 +29,10 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Fim', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
-        @foreach($student->registration as $registration)
+    <x-adminlte-datatable id="table1" :heads="['Plano', 'Status', 'Fim', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+        @if($registration)
             <tr class="{{ ($registration->status == 'C') ? 'text-gray' : '' }}">
               
-                <td>{{ $registration->student->user->name }}</td>
                 <td>{{ $registration->plan->name }} </td>
                 <td>
                     <span class="badge badge-pill badge-{{ $registration->labelTheme }}">{{ $registration->labelStatus }}</span>
@@ -49,11 +50,20 @@
                     
                             <h6 class="dropdown-header text-left">Ações</h6>
 
+
+
+                            <a class="dropdown-item" href="#" >
+                                <i class="fas fa-edit"></i>
+                                Informações
+                            </a>
+
+
+
                             @if($registration->status != 'C')
                     
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
+                            <a class="dropdown-item" href="{{ route('student.registration.edit',[$student, $registration]) }}">
                                 <i class="fas fa-edit"></i>
-                                Cancelar Matrícula
+                                Editar
                             </a>
 
                             @endif
@@ -74,7 +84,7 @@
                         <x-adminlte-modal id="modal-delete-{{ $registration->id }}" v-centered title="Excluir" icon="fas fa-trash" theme="danger">
                             Deseja excluir esse registro?
                             <x-slot name="footerSlot">
-                                <form action="{{ route('registration.destroy', $registration) }}" method="post">
+                                <form action="{{ route('student.registration.destroy', [$student, $registration]) }}" method="post">
                                     @csrf
                                     @method('DELETE')
                                     <x-adminlte-button type="submit" icon="fa fa-trash" theme="danger" label="Excluir"/>
@@ -84,7 +94,7 @@
                             </x-slot>
                         </x-adminlte-modal>
 
-                        <form action="{{ route('registration.cancel', $registration) }}" method="post">    
+                        {{-- <form action="{{ route('student.registration.cancel', [$student, $registration]) }}" method="post">    
                             <x-adminlte-modal id="modal-cancel-{{ $registration->id }}" v-centered title="Cancelar Matrícula" icon="fas fa-trash" theme="danger">
                                 @csrf
                                 @method('PUT')
@@ -97,12 +107,12 @@
                                     <x-adminlte-button theme="light" icon="fa fa-times"  label="Fechar" data-dismiss="modal"/>
                                 </x-slot>
                             </x-adminlte-modal>
-                        </form>
+                        </form> --}}
                     </div>
                 </td>
             </tr>
-        @endforeach
-    </x-adminlte-datatable>
+            @endif
+          </x-adminlte-datatable>
     
 </x-adminlte-card>
 @stop

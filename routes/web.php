@@ -31,6 +31,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('student', StudentController::class);
 Route::resource('student.class', ClassesController::class);
 Route::resource('student.registration', RegistrationController::class);
+Route::put('student/{student}/registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('student.registration.cancel');
 
 
 Route::resource('instructor', InstructorController::class);

@@ -24,7 +24,7 @@ class RegistrationRequest extends FormRequest
     public function rules()
     {
         return [
-            'student_id' => 'required',
+            // 'student_id' => 'required',
             'plan_id' => 'required',
             // 'payment_type_id' => 'required',
             'date_start' => 'required',

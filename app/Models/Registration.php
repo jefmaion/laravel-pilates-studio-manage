@@ -24,7 +24,9 @@ class Registration extends Model
         return ($this->status == 'A') ? 'success' : 'secondary';
     }
 
-
+    public function scopeActive($query) {
+        return $query->where('status', 'A');
+    }
 
     public function student() {
         return $this->belongsTo(Student::class);

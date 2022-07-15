@@ -45,10 +45,10 @@ class RegistrationController extends Controller
     {
 
         $student = $this->studentService->find($studentId);
+        $registration = $student->registration;
 
-       
         // $registrations = $this->registrationService->listAll();
-        return view('registration.index', compact('student'));
+        return view('registration.index', compact('student', 'registration'));
     }
 
     
@@ -58,13 +58,13 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($studentId)
     {
         $registration    = $this->registrationService->new();
-        $students        = $this->studentService->listAll();
+        $student       = $this->studentService->find($studentId);
         $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
-        return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods'));
+        return view('registration.create', compact('registration' ,'student', 'plans',  'paymentMethods'));
     }
 
     /**
@@ -73,10 +73,11 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RegistrationRequest $request)
+    public function store($studentId, RegistrationRequest $request)
     {
-        $this->registrationService->createRegistration($request->except('token'));
-        return redirect()->route('registration.index');
+        $student = $this->studentService->find($studentId);
+        $this->registrationService->createRegistration($student, $request->except('token'));
+        return redirect()->route('student.registration.index', $student);
     }
 
     /**
@@ -96,13 +97,13 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($studentId, $registrationId)
     {
-        $registration    = $this->registrationService->find($id);
-        $students        = $this->studentService->listAll();
+        $registration    = $this->registrationService->find($registrationId);
+        $student         = $registration->student;
         $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
-        return view('registration.edit', compact('registration' ,'students', 'plans',  'paymentMethods'));
+        return view('registration.edit', compact('registration' ,'student', 'plans',  'paymentMethods'));
 
     }
 
@@ -113,10 +114,13 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RegistrationRequest $request, $id)
+    public function update($studentId, $registrationId, RegistrationRequest $request)
     {
-        $this->registrationService->updateRegistration($request->except(['_method', '_token']), $id);
-        return redirect()->route('registration.index');
+
+        $registration = $this->registrationService->find($registrationId);
+
+        $this->registrationService->updateRegistration($registration, $request->except(['_method', '_token']));
+        return redirect()->route('student.registration.index', $registration->student);
     }
 
     public function cancel(Request $request, $id) {
@@ -130,10 +134,11 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($studentId, $registrationId)
     {
-        $this->registrationService->delete($id);
-        return redirect()->route('registration.index');
+        $student = $this->studentService->find($studentId);
+        $this->registrationService->delete($student->registration->id);
+        return redirect()->route('student.registration.index', $student);
     }
 
 }

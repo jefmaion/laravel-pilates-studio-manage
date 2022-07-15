@@ -27,11 +27,17 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Nome', 'Telefone', 'Email', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Nome', 'Status', 'Telefone', 'Email', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($students as $student)
             <tr>
               
                 <td>{{ $student->user->name }}</td>
+                <td>
+
+                    @if(count($student->registration) > 0)
+                    <span class="badge badge-pill badge-success">Ativo</span>
+                    @endif
+                </td>
                 <td>{{ $student->user->phone }}</td>
                 <td>{{ $student->user->email }}</td>
                 <td class="">

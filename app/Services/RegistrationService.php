@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Registration;
 
+
 class RegistrationService extends BaseService {
 
 
@@ -21,23 +22,30 @@ class RegistrationService extends BaseService {
 
 
     public function listRegistrationsByStudent($idStudent) {
-
+        
     }
 
-    public function createRegistration($data) {
+    public function getActiveRegistration($student) {
+        return $this->registration->where('student_id', $student->id)->where('status', 'A')->first();
+    }
+
+    public function createRegistration($student, $data) {
         $data = $this->prepareRegistrationData($data);
-        $registration = $this->create( $data);
+        // $registration = $this->create( $data);
+
+        return $student->registration()->create($data);
 
         // $this->saveWeekdayClass($registration, $data['weekclass']);
         // $this->generateTransactions($registration);
     }
 
 
-    public function updateRegistration($data, $id) {
+    public function updateRegistration(Registration $registration, $data) {
         $data = $this->prepareRegistrationData($data);
-        $this->update($data, $id);
+        $this->update($data, $registration->id);
 
-        $registration = $this->find($id);
+        // $student->registration()->update($data);
+        // $registration = $this->find($id);
         // $this->saveWeekdayClass($registration, $data['weekclass']);
         // $this->generateTransactions($registration);
     }
