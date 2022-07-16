@@ -36,8 +36,8 @@ class Registration extends Model
         return $this->belongsTo(Plan::class);
     }
 
-    public function weekclasses() {
-        return $this->hasMany(RegistrationWeekClass::class);
+    public function classes() {
+        return $this->hasMany(Classes::class);
     }
 
     public function transactions() {

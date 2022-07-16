@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Registration;
 use Carbon\Carbon;
-use Carbon\CarbonImmutable;
 
 class RegistrationService extends BaseService {
 
@@ -12,15 +11,13 @@ class RegistrationService extends BaseService {
     protected $registration;
     protected $planService;
     protected $transactionService;
-    protected $classService;
 
-    public function __construct(Registration $registration, PlanService $planService, TransactionService $transactionService, ClassesService $classService)
+    public function __construct(Registration $registration, PlanService $planService, TransactionService $transactionService)
     {
         parent::__construct($registration);
         $this->registration       = $registration;
         $this->planService        = $planService;
         $this->transactionService = $transactionService;
-        $this->classService = $classService;
     }
 
 
@@ -28,10 +25,10 @@ class RegistrationService extends BaseService {
         return $this->registration->where('student_id', $student->id)->where('status', 'A')->first();
     }
 
-    public function createRegistration($data) {
+    public function createRegistration($student, $data) {
         $data = $this->prepareRegistrationData($data);
 
-        $registration =  $this->registration->create($data);
+        $registration =  $student->registration()->create($data);
 
         if($registration) {
             $this->generateTransactions($registration);
@@ -57,62 +54,6 @@ class RegistrationService extends BaseService {
 
     }
 
-
-    public function delete($id) {
-
-        $registration = $this->find($id);
-
-        $registration->transactions()->whereNull('is_payed')->forceDelete();
-        $registration->classes()->whereNull('status')->forceDelete();
-        
-        $registration->delete();
-
-    }
-
-    public function generateRegistrationClasses(Registration $registration, $data) {
-
-        $startTime = Carbon::createFromFormat('Y-m-d', $registration->date_start);
-        $endTime = Carbon::createFromFormat('Y-m-d', $registration->date_end);
-    
-
-        while ($startTime->lt($endTime)) {
-            
-            if(in_array($startTime->dayOfWeek, [$data['weekday']-1])){
-
-                $this->classService->create([
-                    'date' => $startTime,
-                    'time' => $data['time'],
-                    'instructor_id' => $data['instructor_id'],
-                    'registration_id' => $registration->id,
-                    'student_id' => $registration->student_id,
-                ]);
-
-            }
-    
-            $startTime->addDay();
-        }
-
-    }
-
-
-    function weekDaysBetween($requiredDays, $start, $end)
-    {
-        $startTime = Carbon::createFromFormat('Y-m-d', $start);
-        $endTime = Carbon::createFromFormat('Y-m-d', $end);
-    
-        $result = [];
-    
-        while ($startTime->lt($endTime)) {
-            
-            if(in_array($startTime->dayOfWeek, $requiredDays)){
-                array_push($result, $startTime->copy());
-            }
-            
-            $startTime->addDay();
-        }
-    
-        return $result;
-    }
 
 
     private function prepareRegistrationData($data) {

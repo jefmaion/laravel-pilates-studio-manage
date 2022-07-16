@@ -13,6 +13,19 @@ class Classes extends Model
         'id'
     ];
 
+    protected $weekdayNames = [
+        2 => 'Segunda-Feira',
+        3 => 'Terça-Feira',
+        4 => 'Quarta-Feira',
+        5 => 'Quinta-Feira',
+        6 => 'Sexta-Feira',
+        7 => 'Sábado',
+    ];
+
+    public function getWeekdayNameAttribute() {
+        return $this->weekdayNames[date('w', strtotime($this->date))+1];
+    }
+
     public function student() {
         return $this->belongsTo(Student::class);
     }

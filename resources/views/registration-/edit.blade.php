@@ -4,7 +4,7 @@
 
 @section('content_header')
     <x-package-pageheader title="Matrícula - Editar" icon="fa fa-users" breadcrumb >
-        <x-package-breadcrumb-item label="Matrícula" href="{{ route('registration.index') }}" />
+        <x-package-breadcrumb-item label="Matrícula" href="{{ route('student.registration.index', $student) }}" />
         <x-package-breadcrumb-item label="{{ $registration->name }}" />
     </x-package-pageheader>
 @stop

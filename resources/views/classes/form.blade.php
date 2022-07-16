@@ -1,8 +1,8 @@
 
 @if(!isset($class->id))
-    <form action="{{ route('student.class.store', $student) }}" method="post">
+    <form action="{{ route('registration.class.store', $registration) }}" method="post">
 @else
-<form action="{{ route('student.class.update', [$student, $class]) }}" method="post">
+<form action="{{ route('registration.class.update', $registration) }}" method="post">
     @method('PUT')
 @endif
 
@@ -11,7 +11,7 @@
 
 </div>
 
-    <input type="hidden" name="start_date" value="{{ $student->registration->start_date }}">
+    <input type="hidden" name="start_date" value="">
 
    <x-adminlte-select2 name="instructor_id" id="instructor_id" label="Instrutor" fgroup-class="col-12 col-lg-12 col-md-3 col-sm-6" enable-old-support> 
         <option value=""></option>
@@ -35,7 +35,7 @@
     </x-adminlte-select2>
 
 <x-adminlte-button type="submit" label="Salvar" theme="success" icon="fas fa-lg fa-save"/>
-<x-package-button-link label="Voltar" theme="light"  url="{{ route('student.class.index', $student) }}" icon="fas fa-chevron-left" />
+<x-package-button-link label="Voltar" theme="light"  url="{{ route('registration.class.index', $registration) }}" icon="fas fa-chevron-left" />
 
 
 </form>

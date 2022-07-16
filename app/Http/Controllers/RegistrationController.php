@@ -41,17 +41,11 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($studentId)
+    public function index()
     {
-        $student = $this->studentService->find($studentId);
-
-        if(!$student) {
-            return redirect()->back();
-        }
-
-        $registration = $student->registration;
-
-        return view('registration.index', compact('student', 'registration'));
+        $registrations = $this->registrationService->listAll();
+        
+        return view('registration.index', compact('registrations'));
     }
 
     
@@ -61,14 +55,14 @@ class RegistrationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($studentId)
+    public function create()
     {
+        $registration    = $this->registrationService->new();
+        $students        = $this->studentService->listAll();
+        $plans           = $this->planService->listAll();
+        $paymentMethods  = $this->paymentMethodService->listAll();
 
-        $student      = $this->studentService->find($studentId);
-        $registration = $this->registrationService->new();
-        $plans        = $this->planService->listAll();
-
-        return view('registration.create', compact('registration' ,'student', 'plans'));
+        return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods'));
     }
 
     /**
@@ -77,11 +71,10 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($studentId, RegistrationRequest $request)
+    public function store(RegistrationRequest $request)
     {
-        $student = $this->studentService->find($studentId);
-        $this->registrationService->createRegistration($student, $request->except('token'));
-        return redirect()->route('student.registration.index', $student);
+        $this->registrationService->createRegistration($request->except('token'));
+        return redirect()->route('registration.index');
     }
 
     /**
@@ -90,12 +83,9 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($studentId, $registrationId)
+    public function show($id)
     {
-        $student      = $this->studentService->find($studentId);
-        $registration = $this->registrationService->find($registrationId);
-
-        return view('registration.show', compact('student', 'registration'));
+        //
     }
 
     /**
@@ -104,19 +94,14 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($studentId, $registrationId)
+    public function edit($id)
     {
+        $registration    = $this->registrationService->find($id);
+        $students        = $this->studentService->listAll();
+        $plans           = $this->planService->listAll();
+        $paymentMethods  = $this->paymentMethodService->listAll();
+        return view('registration.edit', compact('registration' ,'students', 'plans',  'paymentMethods'));
 
-        $student      = $this->studentService->find($studentId);
-        $registration = $this->registrationService->find($registrationId);
-
-        if(!$student || !$registration) {
-            return redirect()->back();
-        }
-
-        $plans = $this->planService->listAll();
-
-        return view('registration.edit', compact('registration' ,'student', 'plans'));
     }
 
     /**
@@ -126,28 +111,19 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update($studentId, $registrationId, RegistrationRequest $request)
+    public function update(RegistrationRequest $request, $id)
     {
 
-        $student = $this->studentService->find($studentId);
-        $registration = $this->registrationService->find($registrationId);
 
-        if(!$student || !$registration) {
-            return redirect()->back();
-        }
+        $registration = $this->registrationService->find($id);
 
         $this->registrationService->updateRegistration($registration, $request->except(['_method', '_token']));
-        return redirect()->route('student.registration.index', $student);
+        return redirect()->route('registration.index');
     }
 
-    public function cancel(Request $request, $studentId, $registrationId) {
-
-
-        $student = $this->studentService->find($studentId);
-        $registration = $this->registrationService->find($registrationId);
-
-        $this->registrationService->cancelRegistration($registration, $request->except(['_method', '_token']));
-        return redirect()->route('student.registration.index', $student);
+    public function cancel(Request $request, $id) {
+        $this->registrationService->cancelRegistration($request->except(['_method', '_token']), $id);
+        return redirect()->route('registration.index');
     }
 
     /**
@@ -156,11 +132,10 @@ class RegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($studentId, $registrationId)
+    public function destroy($id)
     {
-        $student = $this->studentService->find($studentId);
-        $this->registrationService->delete($student->registration->id);
-        return redirect()->route('student.registration.index', $student);
+        $this->registrationService->delete($id);
+        return redirect()->route('registration.index');
     }
 
 }

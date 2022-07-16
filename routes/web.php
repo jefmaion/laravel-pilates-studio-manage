@@ -33,14 +33,7 @@ Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
 
 Route::resource('student', StudentController::class);
-Route::resource('student.class', ClassesController::class);
-Route::resource('student.registration', RegistrationController::class);
-Route::resource('student.class', ClassesController::class);
-
-Route::put('student/{student}/registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('student.registration.cancel');
+Route::resource('registration', RegistrationController::class);
+Route::resource('registration.class', RegistrationClassController::class);
 
 
-
-
-// Route::resource('registration', RegistrationController::class);
-Route::put('registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('registration.cancel');
