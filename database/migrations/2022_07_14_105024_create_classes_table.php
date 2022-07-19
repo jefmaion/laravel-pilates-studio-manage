@@ -20,6 +20,7 @@ class CreateClassesTable extends Migration
             $table->unsignedBigInteger('registration_id')->nullable();
             $table->unsignedBigInteger('student_id')->nullable();
             $table->unsignedBigInteger('instructor_id')->nullable();
+            $table->unsignedBigInteger('instructor_id_executed')->nullable();
 
             $table->date('date')->nullable();
             $table->time('time')->nullable();
@@ -29,6 +30,7 @@ class CreateClassesTable extends Migration
             $table->foreign('registration_id')->references('id')->on('registrations');
             $table->foreign('student_id')->references('id')->on('students');
             $table->foreign('instructor_id')->references('id')->on('instructors');
+            $table->foreign('instructor_id_executed')->references('id')->on('instructors');
 
         });
     }

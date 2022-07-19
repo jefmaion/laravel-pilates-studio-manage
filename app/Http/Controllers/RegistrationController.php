@@ -10,6 +10,7 @@ use App\Services\PlanService;
 use App\Services\RegistrationService;
 use App\Services\StudentService;
 use App\Services\WeekService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 
@@ -47,6 +48,10 @@ class RegistrationController extends Controller
      */
     public function index()
     {
+
+
+       
+
         $registrations = $this->registrationService->listAll();
         
         return view('registration.index', compact('registrations'));
@@ -78,9 +83,8 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RegistrationRequest $request)
     {
-        dd($request->all());
         $this->registrationService->createRegistration($request->except('token'));
         return redirect()->route('registration.index');
     }
@@ -108,7 +112,9 @@ class RegistrationController extends Controller
         $students        = $this->studentService->listAll();
         $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
-        return view('registration.edit', compact('registration' ,'students', 'plans',  'paymentMethods'));
+        $weeks = $this->weekdayService->list();
+        $instructors = $this->instructorService->listInstructors();
+        return view('registration.edit', compact('registration' ,'students', 'plans',  'paymentMethods', 'weeks', 'instructors'));
 
     }
 

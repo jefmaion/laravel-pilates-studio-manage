@@ -27,16 +27,18 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Plano', 'Status', 'Fim', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Status',  'Plano', 'Próx. Vencimento', 'Data Renovação', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($registrations as $registration)
             <tr class="{{ ($registration->status == 'C') ? 'text-gray' : '' }}">
               
                 <td>{{ $registration->student->user->name }}</td>
-                <td>{{ $registration->plan->name }} </td>
                 <td>
                     <span class="badge badge-pill badge-{{ $registration->labelTheme }}">{{ $registration->labelStatus }}</span>
                 </td>
-                <td>{{ $registration->date_end }}</td>
+                <td>{{ $registration->plan->name }} </td>
+                <td>{{ $registration->nextPayment()->date . ' ('.$registration->nextPaymentHuman.')' ?? '-' }} </td>
+               
+                <td> {{$registration->date_end}} ({{ $registration->expirationLeft }})</td>
              
                 <td class="">
                     <div class="btn-group">
@@ -68,13 +70,6 @@
 
                             @endif
 
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
-                                <i class="fas fa-edit"></i>
-                                Histórico
-                            </a>
-
-                           
-                    
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ $registration->id }}">
                                 <i class="fas fa-trash-alt"></i>
                                 Excluir

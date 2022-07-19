@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassType;
 use App\Models\Instructor;
 use App\Models\Plan;
 use App\Models\Student;
@@ -23,7 +24,8 @@ class DatabaseSeeder extends Seeder
         Instructor::factory(3)->create();
         $this->call([
             PlanSeeder::class,
-            PaymentMethodSeeder::class
+            PaymentMethodSeeder::class,
+            ClassTypeSeeder::class
         ]);
     }
 }

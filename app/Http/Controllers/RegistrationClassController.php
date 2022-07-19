@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classes;
 use App\Services\InstructorService;
 use App\Services\RegistrationService;
 use App\Services\StudentService;
@@ -39,9 +40,11 @@ class RegistrationClassController extends Controller
     public function index($registrationId)
     {
 
-
+ 
         $registration = $this->registrationService->find($registrationId);
         $classes = $registration->classes;
+
+       
 
 
         return view('registration_class.index', compact('registration', 'classes'));

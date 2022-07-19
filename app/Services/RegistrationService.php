@@ -24,25 +24,30 @@ class RegistrationService extends BaseService {
     }
 
 
+
     public function getActiveRegistration($student) {
         return $this->registration->where('student_id', $student->id)->where('status', 'A')->first();
     }
 
     public function createRegistration($data) {
         $data = $this->prepareRegistrationData($data);
-
         $registration =  $this->registration->create($data);
 
         if($registration) {
+            $this->saveWeekClasses($registration, $data['week']);
+            $this->generateRegistrationClasses($registration, $data);
             $this->generateTransactions($registration);
         }
     }
 
 
     public function updateRegistration(Registration $registration, $data) {
+        
         $data = $this->prepareRegistrationData($data);
 
         if($registration->update($data)) {
+            $this->saveWeekClasses($registration, $data['week']);
+            $this->generateRegistrationClasses($registration, $data);
             $this->generateTransactions($registration);
         }
 
@@ -69,27 +74,37 @@ class RegistrationService extends BaseService {
 
     }
 
+    public function saveWeekClasses(Registration $registration, $data) {
+        $registration->weekClasses()->delete();
+        $registration->weekClasses()->createMany($data);
+    }
+
     public function generateRegistrationClasses(Registration $registration, $data) {
 
-        $startTime = Carbon::createFromFormat('Y-m-d', $registration->date_start);
-        $endTime = Carbon::createFromFormat('Y-m-d', $registration->date_end);
-    
+        
+        $registration->classes()->delete();
 
-        while ($startTime->lt($endTime)) {
-            
-            if(in_array($startTime->dayOfWeek, [$data['weekday']-1])){
+        foreach($registration->weekClasses as $weekClass) {
 
-                $this->classService->create([
-                    'date' => $startTime,
-                    'time' => $data['time'],
-                    'instructor_id' => $data['instructor_id'],
-                    'registration_id' => $registration->id,
-                    'student_id' => $registration->student_id,
-                ]);
+            $startTime = Carbon::createFromFormat('Y-m-d', $registration->date_start);
+            $endTime = Carbon::createFromFormat('Y-m-d', $registration->date_end);
+        
+            while ($startTime->lt($endTime)) {
+                
+                if(in_array($startTime->dayOfWeek, [$weekClass->class_weekday-1])){
 
+                    $registration->classes()->create([
+                        'date' => $startTime,
+                        'time' => $weekClass->class_time,
+                        'instructor_id' => $weekClass->instructor_id,
+                        'registration_id' => $registration->id,
+                        'student_id' => $registration->student_id,
+                    ]);
+
+                }
+        
+                $startTime->addDay();
             }
-    
-            $startTime->addDay();
         }
 
     }

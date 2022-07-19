@@ -31,7 +31,11 @@ class Classes extends Model
     }
 
     public function instructor() {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Instructor::class);
+    }
+
+    public function instructorExecuted() {
+        return $this->belongsTo(Instructor::class, 'instructor_id_executed');
     }
 
     public function registration() {

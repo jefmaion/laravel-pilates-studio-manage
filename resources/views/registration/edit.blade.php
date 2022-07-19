@@ -3,8 +3,9 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <x-package-pageheader title="Matrícula - Editar" icon="fa fa-users" breadcrumb >
+    <x-package-pageheader title="Editar Matrícula" icon="fa fa-users" breadcrumb >
         <x-package-breadcrumb-item label="Matrícula" href="{{ route('registration.index') }}" />
+        <x-package-breadcrumb-item label="{{ $registration->student->user->name }}"  />
         <x-package-breadcrumb-item label="{{ $registration->name }}" />
     </x-package-pageheader>
 @stop
