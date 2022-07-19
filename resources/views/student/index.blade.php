@@ -62,15 +62,7 @@
                             </a>
                     
                     
-                            <a class="dropdown-item" href="{{ route('student.registration.index', $student) }}">
-                                <i class="fas fa-edit"></i>
-                                Matricula
-                            </a>
 
-                            <a class="dropdown-item" href="{{ route('student.class.index', $student) }}">
-                                <i class="fas fa-edit"></i>
-                                Aulas
-                            </a>
                         </div>
                     
                     

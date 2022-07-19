@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Models\PaymentMethod;
+use App\Services\InstructorService;
 use App\Services\PaymentMethodService;
 use App\Services\PlanService;
 use App\Services\RegistrationService;
@@ -17,6 +18,7 @@ class RegistrationController extends Controller
 
     protected $registrationService;
     protected $studentService;
+    protected $instructortService;
     protected $planService;
     protected $paymentMethodService;
     protected $weekdayService;
@@ -26,13 +28,15 @@ class RegistrationController extends Controller
         StudentService $studentService, 
         PlanService $planService, 
         PaymentMethodService $paymentMethodService,
-        WeekService $weekdayService
+        WeekService $weekdayService,
+        InstructorService $instructorService
     ) {
         $this->registrationService = $registrationService;
         $this->studentService = $studentService;
         $this->planService = $planService;
         $this->paymentMethodService = $paymentMethodService;
         $this->weekdayService = $weekdayService;
+        $this->instructorService = $instructorService;
 
     }
 
@@ -62,7 +66,10 @@ class RegistrationController extends Controller
         $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
 
-        return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods'));
+        $instructors = $this->instructorService->listInstructors();
+        $weeks = $this->weekdayService->list();
+
+        return view('registration.create', compact('registration' ,'students', 'plans',  'paymentMethods', 'instructors', 'weeks'));
     }
 
     /**
@@ -71,8 +78,9 @@ class RegistrationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RegistrationRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         $this->registrationService->createRegistration($request->except('token'));
         return redirect()->route('registration.index');
     }

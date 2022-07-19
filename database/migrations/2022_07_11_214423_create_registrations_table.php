@@ -24,6 +24,7 @@ class CreateRegistrationsTable extends Migration
             $table->date('date_end')->nullable();
             $table->string('status',2)->nullable();
             $table->integer('expiration_day')->nullable();
+            $table->integer('class_per_week')->nullable();
             $table->decimal('value', 10,2)->nullable();
             $table->decimal('discount', 10,2)->nullable();
             $table->decimal('final_value', 10,2)->nullable();
