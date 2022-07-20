@@ -97,7 +97,8 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-        //
+        $registration = $this->registrationService->find($id);
+        return view('registration.show', compact('registration'));
     }
 
     /**

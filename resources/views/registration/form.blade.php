@@ -34,7 +34,7 @@
                 @endforeach
             </x-adminlte-select2>
 
-            <x-adminlte-input name="class_per_week" label="Aulas por semana" fgroup-class="col-12 col-lg-2 col-md-3 col-sm-6" enable-old-support value="{{ $registration->class_per_week }}" />
+            <x-adminlte-input name="class_per_week" label="Aulas p/ semana" fgroup-class="col-12 col-lg-2 col-md-3 col-sm-6" enable-old-support value="{{ $registration->class_per_week }}" />
             
             <x-adminlte-input type="hidden" name="value" id="value" group-class="col-12 col-lg-2 col-md-3 col-sm-6" enable-old-support value="{{ $registration->value }}" />
             <x-adminlte-input name="discount" class="strong" id="discount" label="Desconto (%)" fgroup-class="col-12 col-lg-2 col-md-3 col-sm-6" onkeyup="getValueDiscount(this.value)" value="{{ $registration->discount }}" enable-old-support  />
@@ -49,6 +49,10 @@
 
 <p class="text-muted"><strong>Aulas na Semana</strong></p>
 <hr>
+
+@if($errors->has('week'))
+    <p class="text-danger"><strong>{{ $errors->first('week') }}</strong></p>
+@endif
 
 <table class="table tables-sm">
     <thead class="thead-light">
@@ -97,9 +101,7 @@
 
 </table>
 
-@if($errors->has('week'))
-    <p class="text-danger"><strong>{{ $errors->first('week') }}</strong></p>
-@endif
+
 
 <hr>
 

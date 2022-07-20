@@ -53,9 +53,14 @@
 
                             @if($registration->status != 'C')
                     
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
+                            {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
                                 <i class="fas fa-edit"></i>
                                 Cancelar Matrícula
+                            </a> --}}
+
+                            <a class="dropdown-item" href="{{ route('registration.show',  $registration) }}">
+                                <i class="fas fa-edit"></i>
+                                Informações
                             </a>
 
                             <a class="dropdown-item" href="{{ route('registration.edit',  $registration) }}">

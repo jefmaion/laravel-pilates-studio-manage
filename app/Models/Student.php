@@ -35,8 +35,12 @@ class Student extends Model
     }
 
     public function registration() {
-
         return $this->hasOne(Registration::class)->where('status', 'A');
+    }
+
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class);
     }
 
     public function activeRegistration() {

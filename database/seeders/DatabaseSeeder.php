@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        Student::factory(200)->create();
+        Student::factory(50)->create();
         Instructor::factory(3)->create();
         $this->call([
             PlanSeeder::class,

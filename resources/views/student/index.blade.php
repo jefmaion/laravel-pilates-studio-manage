@@ -50,6 +50,11 @@
                         <div class="dropdown-menu">
                     
                             <h6 class="dropdown-header text-left">Ações</h6>
+
+                            <a class="dropdown-item" href="{{ route('student.show', $student) }}">
+                                <i class="fas fa-edit"></i>
+                                Informações
+                            </a>
                     
                             <a class="dropdown-item" href="{{ route('student.edit', $student) }}">
                                 <i class="fas fa-edit"></i>

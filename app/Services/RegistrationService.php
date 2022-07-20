@@ -166,7 +166,7 @@ class RegistrationService extends BaseService {
                 'date'        => Carbon::parse($registration->date_start)->addMonths($i),
                 'value'       => $registration->final_value,
                 'type'        => 1,
-                'description' => '('.$i.' de '.$numMonths.') '  . $registration->student->user->name,
+                'description' =>  $registration->student->user->name . ' (Mensalidade '.$i.' de '.$numMonths.') ',
             ];
         }
 

@@ -26,7 +26,7 @@ class Registration extends Model
     }
 
     public function scopeActive($query) {
-        return $query->where('status', 'A');
+        // return $query->where('status', 'A');
     }
 
     public function student() {
