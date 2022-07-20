@@ -23,7 +23,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = $this->student->listStudents();
+        $students = $this->student->listLasts();
         return view('student.index', compact('students'));
 
     }
@@ -35,7 +35,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $user = new $this->student->new();
+        $user = $this->student->new();
         return view('student.create', compact('user'));
     }
 

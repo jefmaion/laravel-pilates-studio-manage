@@ -14,4 +14,12 @@ class Transaction extends Model
     ];
 
 
+    public function getValueFormatedAttribute() {
+        return number_format($this->value, 2, ",", ".");
+    }
+
+    public function paymentMethod() {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
 }

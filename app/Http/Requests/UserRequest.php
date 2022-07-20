@@ -30,4 +30,14 @@ class UserRequest extends FormRequest
             // 'user.email' => 'required|email|unique:users,email,'.$id,
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'user.name' => 'Nome',
+            'user.phone' => 'Telefone',
+            'user.birth_date' => 'Data de Nascimento'
+            
+        ];
+    }
 }

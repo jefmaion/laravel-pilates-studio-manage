@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CancelType;
 use App\Models\ClassType;
 use App\Models\Instructor;
 use App\Models\Plan;
@@ -25,7 +26,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PlanSeeder::class,
             PaymentMethodSeeder::class,
-            ClassTypeSeeder::class
+            ClassTypeSeeder::class,
+            CancelTypeSeeder::class
         ]);
     }
 }

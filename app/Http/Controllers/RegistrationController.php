@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RegistrationRequest;
 use App\Models\PaymentMethod;
+use App\Services\CancelTypeService;
 use App\Services\InstructorService;
 use App\Services\PaymentMethodService;
 use App\Services\PlanService;
@@ -23,6 +24,7 @@ class RegistrationController extends Controller
     protected $planService;
     protected $paymentMethodService;
     protected $weekdayService;
+    protected $cancelTypeService;
 
     public function __construct(
         RegistrationService $registrationService, 
@@ -30,7 +32,8 @@ class RegistrationController extends Controller
         PlanService $planService, 
         PaymentMethodService $paymentMethodService,
         WeekService $weekdayService,
-        InstructorService $instructorService
+        InstructorService $instructorService,
+        CancelTypeService $cancelTypeService
     ) {
         $this->registrationService = $registrationService;
         $this->studentService = $studentService;
@@ -38,6 +41,7 @@ class RegistrationController extends Controller
         $this->paymentMethodService = $paymentMethodService;
         $this->weekdayService = $weekdayService;
         $this->instructorService = $instructorService;
+        $this->cancelTypeService = $cancelTypeService;
 
     }
 
@@ -52,7 +56,7 @@ class RegistrationController extends Controller
 
        
 
-        $registrations = $this->registrationService->listAll();
+        $registrations = $this->registrationService->listlasts();
         
         return view('registration.index', compact('registrations'));
     }
@@ -67,7 +71,7 @@ class RegistrationController extends Controller
     public function create()
     {
         $registration    = $this->registrationService->new();
-        $students        = $this->studentService->listAll();
+        $students        = $this->studentService->listLasts();
         $plans           = $this->planService->listAll();
         $paymentMethods  = $this->paymentMethodService->listAll();
 
@@ -98,7 +102,10 @@ class RegistrationController extends Controller
     public function show($id)
     {
         $registration = $this->registrationService->find($id);
-        return view('registration.show', compact('registration'));
+        $cancelTypes = $this->cancelTypeService->listAll();
+
+        
+        return view('registration.show', compact('registration', 'cancelTypes'));
     }
 
     /**
@@ -137,7 +144,12 @@ class RegistrationController extends Controller
     }
 
     public function cancel(Request $request, $id) {
-        $this->registrationService->cancelRegistration($request->except(['_method', '_token']), $id);
+
+
+
+        $registration = $this->registrationService->find($id);
+
+        $this->registrationService->cancelRegistration($registration, $request->except(['_method', '_token']));
         return redirect()->route('registration.index');
     }
 

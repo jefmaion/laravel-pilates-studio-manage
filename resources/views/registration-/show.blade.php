@@ -15,7 +15,7 @@
 
 
 
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <h2><strong>{{ $student->user->name }}</strong></h2>
     <p><b>Plano: </b>{{ $registration->plan->name }}</p>
@@ -62,7 +62,7 @@
     </div>
 
 
-    <x-package-button-link label="Voltar" theme="light"  url="{{ url()->previous() }}" icon="fas fa-chevron-left" />
+    <x-package-button-link class="bg-purple" label="Voltar" theme="light"  url="{{ url()->previous() }}" icon="fas fa-chevron-left" />
     
     
 </x-adminlte-card>

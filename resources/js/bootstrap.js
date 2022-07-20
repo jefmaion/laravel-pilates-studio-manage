@@ -11,6 +11,12 @@ try {
  */
 
 window.axios = require('axios');
+window.$ = window.jQuery = require('jquery');
+
+
+require('overlayscrollbars');
+require('bootstrap');
+require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 

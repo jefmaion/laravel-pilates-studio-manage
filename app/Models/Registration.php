@@ -18,16 +18,16 @@ class Registration extends Model
 
 
     public function getLabelStatusAttribute() {
-        return ($this->status == 'A') ? 'Ativo' : 'Inativo';
+        return ($this->status == 'A') ? 'Ativo' : 'Cancelada';
     }
 
     public function getLabelThemeAttribute() {
-        return ($this->status == 'A') ? 'success' : 'secondary';
+        return ($this->status == 'A') ? 'bg-purple' : 'badge-secondary';
     }
 
-    public function scopeActive($query) {
-        // return $query->where('status', 'A');
-    }
+    // public function scopeActive($query) {
+    //     // return $query->where('status', 'A');
+    // }
 
     public function student() {
         return $this->belongsTo(Student::class);
@@ -41,6 +41,17 @@ class Registration extends Model
         return $this->hasMany(RegistrationWeekClass::class);
     }
 
+    public function getSumAmountAttribute() {
+        return $this->transactions()->sum('value');
+    }
+
+    public function getSumAmountDebitAttribute() {
+        return $this->transactions()->whereNull('is_payed')->sum('value');
+    }
+
+    public function getAmountPayedAttribute() {
+        return ($this->sumAmount - $this->sumAmountDebit);
+    }
     
 
     public function classes() {
@@ -51,12 +62,22 @@ class Registration extends Model
         return $this->hasMany(Transaction::class);
     }
 
-    public function nextPayment() {
-        return $this->transactions()->whereNull('is_payed')->first();
+    public function cancelType() {
+        return $this->belongsTo(CancelType::class);
+    }
+
+    public function getNextPaymentAttribut() {
+        $item = $this->transactions()->whereNull('is_payed')->first();
+
+        if(!$item) {
+            return null;
+        }
+
+        return $item->date;
     }
 
     public function getNextPaymentHumanAttribute() {
-        $subscription_end = new Carbon($this->nextPayment()->date);
+        $subscription_end = new Carbon($this->nextPayment);
         $left = $subscription_end->subDays(Carbon::now()->diffInDays());
         return $left->diffForHumans();
     }
@@ -75,5 +96,15 @@ class Registration extends Model
         }
 
         return $d->{$param};
+    }
+
+
+
+    public function getDateStartFormatedAttribute() {
+        return date('d/m/Y', strtotime($this->date_start));
+    }
+
+    public function getDateEndFormatedAttribute() {
+        return date('d/m/Y', strtotime($this->date_end));
     }
 }

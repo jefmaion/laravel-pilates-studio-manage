@@ -34,8 +34,8 @@
         @endfor
     </x-adminlte-select2>
 
-<x-adminlte-button type="submit" label="Salvar" theme="success" icon="fas fa-lg fa-save"/>
-<x-package-button-link label="Voltar" theme="light"  url="{{ route('registration.class.index', $registration) }}" icon="fas fa-chevron-left" />
+<x-adminlte-button type="submit" label="Salvar"  icon="fas fa-lg fa-save"/>
+<x-package-button-link class="bg-purple" label="Voltar" theme="light"  url="{{ route('registration.class.index', $registration) }}" icon="fas fa-chevron-left" />
 
 
 </form>

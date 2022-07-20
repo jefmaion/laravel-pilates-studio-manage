@@ -30,7 +30,7 @@
             <x-adminlte-select2 name="plan_id" id="plan_id" label="Plano" fgroup-class="col-12 col-lg-4 col-md-3 col-sm-6" onchange="getValueFromPlan(this)" enable-old-support> 
                 <option value=""></option>
                 @foreach($plans as $plan)
-                <option value="{{ $plan->id }}" data-value="{{ $plan->value }}" {{ ($plan->id == $registration->plan_id) ? 'selected' : '' }}>{{ $plan->name . ' ('.$plan->value.')' }}</option>
+                <option value="{{ $plan->id }}" data-value="{{ $plan->value }}" data-per-week="{{ $plan->class_per_week }}" {{ ($plan->id == $registration->plan_id) ? 'selected' : '' }}>{{ $plan->name . ' ('.$plan->value.')' }}</option>
                 @endforeach
             </x-adminlte-select2>
 
@@ -106,9 +106,12 @@
 <hr>
 
 
+<x-package-button-link label="Voltar" theme="secondary"  url="{{ route('registration.index') }}" icon="fas fa-chevron-left" />
 
-<x-adminlte-button type="submit" label="Salvar" theme="success" icon="fas fa-lg fa-save"/>
-<x-package-button-link label="Voltar" theme="light"  url="{{ route('registration.index') }}" icon="fas fa-chevron-left" />
+<x-adminlte-button type="submit" label="Salvar" class="bg-purple"  icon="fas fa-lg fa-save"/>
+
+
+
 
 </form>
 
@@ -120,7 +123,12 @@
 
         function getValueFromPlan(obj) {
             value = $('option:selected', obj).data('value');
+            classWeek = $('option:selected', obj).data('per-week');
+
+            $('input[name="class_per_week"]').val(classWeek);
             $('#value').val(value)
+
+
             calculateDiscount(value, $('#discount').val());
         }
 

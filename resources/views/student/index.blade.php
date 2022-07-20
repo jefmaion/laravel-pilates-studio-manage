@@ -10,11 +10,12 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Novo Aluno" url="{{ route('student.create') }}" icon="fas fa-plus" />
+            <x-package-button-link class="bg-purple"  class="bg-purple " label="Novo Aluno" url="{{ route('student.create') }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">
@@ -27,17 +28,18 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Nome', 'Status', 'Telefone', 'Email', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Nome', 'Idade', 'Telefone', 'Email', 'Data do Cadastro' ,'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($students as $student)
             <tr>
               
                 <td>{{ $student->user->name }}</td>
                 <td>
-
+                    {{ $student->user->age; }}
                   
                 </td>
                 <td>{{ $student->user->phone }}</td>
                 <td>{{ $student->user->email }}</td>
+                <td>{{ $student->user->created_at }}</td>
                 <td class="">
 
 
@@ -52,7 +54,7 @@
                             <h6 class="dropdown-header text-left">Ações</h6>
 
                             <a class="dropdown-item" href="{{ route('student.show', $student) }}">
-                                <i class="fas fa-edit"></i>
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
                                 Informações
                             </a>
                     

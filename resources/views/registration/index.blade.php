@@ -10,11 +10,11 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Nova Matrícula" url="{{ route('registration.create') }}" icon="fas fa-plus" />
+            <x-package-button-link class="bg-purple"   label="Nova Matrícula" url="{{ route('registration.create') }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">
@@ -27,18 +27,26 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Status',  'Plano', 'Próx. Vencimento', 'Data Renovação', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Aluno', 'Status',  'Plano', 'Próx. Vencimento', 'Data Renovação', 'Observações', 'Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($registrations as $registration)
             <tr class="{{ ($registration->status == 'C') ? 'text-gray' : '' }}">
               
                 <td>{{ $registration->student->user->name }}</td>
                 <td>
-                    <span class="badge badge-pill badge-{{ $registration->labelTheme }}">{{ $registration->labelStatus }}</span>
+                    <span class="badge badge-pill badge-block {{ $registration->labelTheme }}">{{ $registration->labelStatus }}</span>
                 </td>
                 <td>{{ $registration->plan->name }} </td>
-                <td>{{ $registration->nextPayment()->date . ' ('.$registration->nextPaymentHuman.')' ?? '-' }} </td>
+                <td>
+                    {{ $registration->nextPayment}}
+                    <span class="text-muted"><small>({{ $registration->nextPaymentHuman ?? '' }})</small></span>
+                    
+                </td>
                
-                <td> {{$registration->date_end}} ({{ $registration->expirationLeft }})</td>
+                <td>
+                    {{ date('d/m/Y', strtotime($registration->date_end))}} 
+                    <span class="text-muted"><small>({{ $registration->expirationLeft ?? '' }})</small></span>
+                </td>
+                <td> {{$registration->comments}}</td>
              
                 <td class="">
                     <div class="btn-group">
@@ -51,6 +59,12 @@
                     
                             <h6 class="dropdown-header text-left">Ações</h6>
 
+                            <a class="dropdown-item" href="{{ route('registration.show',  $registration) }}">
+                                <i class="fas fa-edit"></i>
+                                Informações
+                            </a>
+
+
                             @if($registration->status != 'C')
                     
                             {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
@@ -58,20 +72,16 @@
                                 Cancelar Matrícula
                             </a> --}}
 
-                            <a class="dropdown-item" href="{{ route('registration.show',  $registration) }}">
-                                <i class="fas fa-edit"></i>
-                                Informações
-                            </a>
-
+                            
                             <a class="dropdown-item" href="{{ route('registration.edit',  $registration) }}">
                                 <i class="fas fa-edit"></i>
                                 Editar
                             </a>
-
+{{-- 
                             <a class="dropdown-item" href="{{ route('registration.class.index',  $registration) }}">
                                 <i class="fas fa-edit"></i>
                                 Aulas
-                            </a>
+                            </a> --}}
 
                             @endif
 

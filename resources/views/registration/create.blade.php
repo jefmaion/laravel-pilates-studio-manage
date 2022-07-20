@@ -10,7 +10,7 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
         @include('registration.form')
 </x-adminlte-card>
 @stop

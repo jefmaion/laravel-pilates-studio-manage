@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
@@ -31,9 +32,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
+Route::resource('calendar', CalendarController::class);
 
 Route::resource('student', StudentController::class);
 Route::resource('registration', RegistrationController::class);
+Route::put('registration/{registration}/cancel', [RegistrationController::class, 'cancel'])->name('registration.cancel');
 Route::resource('registration.class', RegistrationClassController::class);
 
 

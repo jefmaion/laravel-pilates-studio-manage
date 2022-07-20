@@ -23,6 +23,7 @@ class RegistrationService extends BaseService {
         $this->classService = $classService;
     }
 
+    
 
 
     public function getActiveRegistration($student) {
@@ -58,7 +59,11 @@ class RegistrationService extends BaseService {
 
         $data['status'] = 'C';
         $data['cancel_date'] = date('Y-m-d H:i:s');
-        $this->updateRegistration($registration, $data);
+
+
+        $registration->update($data);
+        // $this->updateRegistration($registration, $data);
+        
 
     }
 
@@ -99,6 +104,8 @@ class RegistrationService extends BaseService {
                         'instructor_id' => $weekClass->instructor_id,
                         'registration_id' => $registration->id,
                         'student_id' => $registration->student_id,
+                        'class_type_id' => 1,
+                        'status' => 'A'
                     ]);
 
                 }

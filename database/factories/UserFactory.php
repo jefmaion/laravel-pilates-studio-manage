@@ -28,8 +28,10 @@ class UserFactory extends Factory
             'gender' => $this->faker->randomElement(['M', 'F']),
             'phone' => $this->faker->phoneNumber(),
             'phone2' => $this->faker->phoneNumber(),
-            // 'zipcode' => $this->faker->zipcode(),
-            'address' => $this->faker->address()
+            'zipcode' => $this->faker->postcode(),
+            'address' => $this->faker->address(),
+
+            'birth_date' => $this->faker->date('Y-m-d', '2000-01-01'),
             
         ];
     }

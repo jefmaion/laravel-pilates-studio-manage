@@ -10,12 +10,12 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <div class="row">
         <div class="col">
             @if(!$registration)
-            <x-package-button-link  theme="success" label="Nova Matrícula" url="{{ route('student.registration.create', $student) }}" icon="fas fa-plus" />
+            <x-package-button-link class="bg-purple"   label="Nova Matrícula" url="{{ route('student.registration.create', $student) }}" icon="fas fa-plus" />
             @endif
         </div>
         <div class="col">

@@ -1,11 +1,13 @@
 <div class="row mb-2">
     <div class="col-sm-6">
-        <h1 class="display-1 m-0 ">
-
+        <div class="m-0 ">
+            <span class="h1 font-weight-light">
             <i class="{{ $icon }}"></i>
 
             {{ $title }}
-        </h1>
+
+            </span>
+        </div>
     </div>
     <div class="col-sm-6">
         @if($breadcrumb)

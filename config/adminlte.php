@@ -122,14 +122,14 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => '',
-    'classes_brand_text' => '',
-    'classes_content_wrapper' => '',
+    'classes_brand' => 'bg-purple',
+    'classes_brand_text' => 'text-white',
+    'classes_content_wrapper' => 'border-left',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-purple elevation-4',
+    'classes_sidebar' => 'sidebar-dark-purple belevation-0',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-purple navbar-dark border-bottom-0',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -481,6 +481,44 @@ return [
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
+            ],
+        ],
+        'FullCalendar' => [
+            'active' => false,
+            'files' => [
+                // Core
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/fullcalendar/main.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/fullcalendar/main.min.css',
+                ],
+                // // Daygrid plugin.
+                // [
+                //     'type' => 'js',
+                //     'asset' => true,
+                //     'location' => 'vendor/fullcalendar-plugins/daygrid/main.min.js',
+                // ],
+                // [
+                //     'type' => 'css',
+                //     'asset' => true,
+                //     'location' => 'vendor/fullcalendar-plugins/daygrid/main.min.css',
+                // ],
+                // // Bootstrap 4 plugin.
+                // [
+                //     'type' => 'js',
+                //     'asset' => true,
+                //     'location' => 'vendor/fullcalendar-plugins/bootstrap/main.min.js',
+                // ],
+                // [
+                //     'type' => 'css',
+                //     'asset' => true,
+                //     'location' => 'vendor/fullcalendar-plugins/bootstrap/main.min.css',
+                // ],
             ],
         ],
         'Pace' => [

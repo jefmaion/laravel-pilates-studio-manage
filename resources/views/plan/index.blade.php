@@ -10,11 +10,11 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Novo Plano" url="{{ route('plan.create') }}" icon="fas fa-plus" />
+            <x-package-button-link class="bg-purple"   label="Novo Plano" url="{{ route('plan.create') }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">
@@ -27,12 +27,13 @@
 
     <hr>
 
-    <x-adminlte-datatable id="table1" :heads="['Descrição', 'Duração', 'Valor','Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+    <x-adminlte-datatable id="table1" :heads="['Descrição', 'Duração', 'Aulas por Semana', 'Valor','Ações']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
         @foreach($plans as $plan)
             <tr>
               
                 <td>{{ $plan->name }}</td>
                 <td>{{ $plan->duration }}</td>
+                <td>{{ $plan->class_per_week }}</td>
                 <td>{{ $plan->value }}</td>
                 <td class="">
                     <x-package-row-menu 

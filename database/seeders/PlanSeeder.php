@@ -19,17 +19,20 @@ class PlanSeeder extends Seeder
                 [
                     'name' => 'Mensal (1x)',
                     'duration' => 1,
+                    'class_per_week' => 1,
                     'value' => 154.98
                 ],
                 [
                     'name' => 'Mensal (2x)',
                     'duration' => 1,
+                    'class_per_week' => 2,
                     'value' => 250
                 ],
 
                 [
                     'name' => 'Mensal (3x)',
                     'duration' => 1,
+                    'class_per_week' => 3,
                     'value' => 300
                 ],
 
@@ -37,17 +40,20 @@ class PlanSeeder extends Seeder
                 [
                     'name' => 'Bimestral (1x)',
                     'duration' => 2,
+                    'class_per_week' => 1,
                     'value' => 254.98
                 ],
                 [
                     'name' => 'Bimestral (2x)',
                     'duration' => 2,
+                    'class_per_week' => 2,
                     'value' => 350
                 ],
 
                 [
                     'name' => 'Bimestral (3x)',
                     'duration' => 2,
+                    'class_per_week' => 3,
                     'value' => 400
                 ],
 
@@ -55,17 +61,20 @@ class PlanSeeder extends Seeder
                 [
                     'name' => 'Trimestral (1x)',
                     'duration' => 3,
+                    'class_per_week' => 1,
                     'value' => 454.98
                 ],
                 [
                     'name' => 'Trimestral (2x)',
                     'duration' => 3,
+                    'class_per_week' => 2,
                     'value' => 550
                 ],
 
                 [
                     'name' => 'Trimestral (3x)',
                     'duration' => 3,
+                    'class_per_week' => 3,
                     'value' => 600
                 ]
         ];

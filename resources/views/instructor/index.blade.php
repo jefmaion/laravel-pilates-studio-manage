@@ -10,11 +10,11 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
     <div class="row">
         <div class="col">
-            <x-package-button-link  theme="success" label="Novo Professor" url="{{ route('instructor.create') }}" icon="fas fa-plus" />
+            <x-package-button-link class="bg-purple"   label="Novo Professor" url="{{ route('instructor.create') }}" icon="fas fa-plus" />
         </div>
         <div class="col">
             <div class="text-muted text-right">

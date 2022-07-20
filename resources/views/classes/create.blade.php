@@ -10,7 +10,7 @@
 @stop
 
 @section('content')
-<x-adminlte-card theme="secondary" theme-mode="outline">
+<x-adminlte-card theme="purple" theme-mode="outline">
 
         <h2>Aulas de {{ $student->user->name }}</h2>
         <hr>

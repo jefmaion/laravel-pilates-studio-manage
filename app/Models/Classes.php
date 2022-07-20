@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPUnit\Framework\isNull;
+
 class Classes extends Model
 {
     use HasFactory;
@@ -22,23 +24,56 @@ class Classes extends Model
         7 => 'Sábado',
     ];
 
-    public function getWeekdayNameAttribute() {
-        return $this->weekdayNames[date('w', strtotime($this->date))+1];
+    protected $classStatusData = [
+        'A' => 'Agendada',
+        'C' => 'Cancelada',
+        'E' => 'Executada'
+    ];
+
+    public function getClassStatusAttribute()
+    {
+
+        if (!$this->status) {
+            return $this->classStatusData['A'];
+        }
+
+        return $this->classStatusData[$this->status];
     }
 
-    public function student() {
+    
+
+    public function getWeekdayNameAttribute()
+    {
+        return $this->weekdayNames[date('w', strtotime($this->date)) + 1];
+    }
+
+    public function getDateFormatedAttribute()
+    {
+        return date('d/m/Y', strtotime($this->date));
+    }
+
+    public function student()
+    {
         return $this->belongsTo(Student::class);
     }
 
-    public function instructor() {
+    public function instructor()
+    {
         return $this->belongsTo(Instructor::class);
     }
 
-    public function instructorExecuted() {
+    public function instructorExecuted()
+    {
         return $this->belongsTo(Instructor::class, 'instructor_id_executed');
     }
 
-    public function registration() {
+    public function registration()
+    {
         return $this->belongsTo(Student::class);
+    }
+
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
     }
 }
