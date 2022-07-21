@@ -17,20 +17,13 @@ class EventController extends Controller
 
         
 
-        $events = Classes::whereDate('date', '>=', $request->start)
+        $events = Classes::with(['student', 'instructor'])->whereDate('date', '>=', $request->start)
             ->whereDate('date', '<=', $request->end)
             ->get();
 
-            $json = [];
-            foreach($events as $event) {
-                $json[] = [
-                    'start' => $event->date .'T'.$event->time,
-                    'end' => $event->date,
-                    'title' => $event->student->user->name
-                ];
-            }
+            $events = $this->prepareEvents($events);
 
-            return response()->json($json);
+            return response()->json($events);
     }
 
     /**
@@ -97,5 +90,36 @@ class EventController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+
+    private function prepareEvents($events) {
+
+        $json = [];
+        foreach($events as $event) {
+
+            $bg = 'bg-purple disabled ';
+
+            if($event->status == 'C') {
+                $bg = 'bg-danger';
+            }
+
+            if($event->status == 'E') {
+                $bg = 'bg-success';
+            }
+
+
+            $json[] = [
+                'id' => $event->id,
+                'start' => $event->date .'T'.$event->time,
+                'end' => $event->date,
+                'title' => $event->student->user->nickname . ' ',
+                'className' => [$bg, 'border-0'],
+                'event' => $event
+            ];
+        }
+
+        return $json;
     }
 }

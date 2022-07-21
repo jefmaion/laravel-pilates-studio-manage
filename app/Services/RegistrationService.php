@@ -61,7 +61,11 @@ class RegistrationService extends BaseService {
         $data['cancel_date'] = date('Y-m-d H:i:s');
 
 
+
         $registration->update($data);
+        $registration->classes()->where('status', 'A')->delete();
+        $registration->transactions()->whereNull('is_payed')->forceDelete();
+
         // $this->updateRegistration($registration, $data);
         
 

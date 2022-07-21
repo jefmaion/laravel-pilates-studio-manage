@@ -16,10 +16,13 @@
     <div class="col-12">
 
         <div class="row mb-2">
-            <div class="col-6">
+            <div class="col-4">
+                <button type="button" class="btn btn-primary">Agendar Aula</button>
+            </div>
+            <div class="col-4 text-center">
                 <h1 id="calendar-month-title"></h1>
             </div>
-            <div class="col-6 text-right">
+            <div class="col-4 text-right">
                 <div class="btn-group " role="group" aria-label="Basic example">
                     <button type="button" class="btn btn-secondary" onClick="changeTo('dayGridMonth')">Mês</button>
                     <button type="button" class="btn btn-secondary" onClick="changeTo('timeGridWeek')">Semana</button>
@@ -47,7 +50,66 @@
 </div>
 
 </x-adminlte-card>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal-event" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-purple">
+                <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+            </div>
+            <div class="modal-body">
+                <h4 class="m-0"><b>07:00 Jorde da Silva</b></h4>
+                <div class="text-muted">
+                    <i class="fa fa-phone" aria-hidden="true"></i>
+                    (19) 998545.65487
+                </div>
+                <span class="badge badge-pill badge-warning">Matrícula vence hoje</span>
+                <hr>
+                <div class="text-muted">
+                    
+                    <div class="text-muted">
+                        <i class="fas fa-user-ninja    "></i>
+                        Gleice Reis
+                    </div>
+                </div>
+                
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde officia eius perferendis repellat harum. Tempora velit, laudantium aut odio fugit ut, officia modi exercitationem facilis quidem excepturi iusto est amet!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-danger">
+                    <i class="fas fa-stop-circle    "></i>
+                    Apontar Falta
+                </button>
+
+                <button type="button"  class="bg-purple btn">
+                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                    Finalizar Aula
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<x-adminlte-modal id="modal-evsent" v-centered theme="purple" icon="fas fa-bolt" size='lg' disable-animations>
    
+    <h4>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        Jefferson Silveira
+    </h4>
+
+     <div>
+        <i class="fa fa-user" aria-hidden="true"></i>
+        Joana Clauida
+    </div>
+    
+</x-adminlte-modal>
+
 @stop
 
 
@@ -75,10 +137,15 @@ var SITEURL = "{{ url('/') }}";
                 headerToolbar: false,
                 slotMinTime:'07:00:00',
                 slotMaxTime:'21:00:00',
+                
                 height: "auto",
                 hiddenDays: [ 0 ],
                 allDaySlot: false,
-                // events: "{{ route('event.index') }}",
+                slotLabelFormat:{
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    omitZeroMinute: false,
+                },
                 eventSources: [
 
                     // your event source
@@ -90,7 +157,18 @@ var SITEURL = "{{ url('/') }}";
 
                     // any other sources...
 
-                ]
+                ],
+                eventClick: function(info) {
+
+                    console.log(info)
+                    // alert('Event: ' + info.event.title);
+                    // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+                    // alert('View: ' + info.view.type);
+
+                    // // change the border color just for fun
+                    // info.el.style.borderColor = 'red';
+                    $('#modal-event').modal('show')
+                }
         });
 
         calendar.render();
