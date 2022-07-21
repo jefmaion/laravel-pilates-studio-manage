@@ -486,7 +486,6 @@ return [
         'FullCalendar' => [
             'active' => false,
             'files' => [
-                // Core
                 [
                     'type' => 'js',
                     'asset' => true,
@@ -497,28 +496,6 @@ return [
                     'asset' => true,
                     'location' => 'vendor/fullcalendar/main.min.css',
                 ],
-                // // Daygrid plugin.
-                // [
-                //     'type' => 'js',
-                //     'asset' => true,
-                //     'location' => 'vendor/fullcalendar-plugins/daygrid/main.min.js',
-                // ],
-                // [
-                //     'type' => 'css',
-                //     'asset' => true,
-                //     'location' => 'vendor/fullcalendar-plugins/daygrid/main.min.css',
-                // ],
-                // // Bootstrap 4 plugin.
-                // [
-                //     'type' => 'js',
-                //     'asset' => true,
-                //     'location' => 'vendor/fullcalendar-plugins/bootstrap/main.min.js',
-                // ],
-                // [
-                //     'type' => 'css',
-                //     'asset' => true,
-                //     'location' => 'vendor/fullcalendar-plugins/bootstrap/main.min.css',
-                // ],
             ],
         ],
         'Pace' => [

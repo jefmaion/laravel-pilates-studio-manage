@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\RegistrationClassController;
@@ -33,6 +34,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
 Route::resource('calendar', CalendarController::class);
+Route::resource('event', EventController::class);
+
+// Route::post('event', [EventController::class, 'index'])->name('event.index');
 
 Route::resource('student', StudentController::class);
 Route::resource('registration', RegistrationController::class);

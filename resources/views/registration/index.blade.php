@@ -60,35 +60,24 @@
                             <h6 class="dropdown-header text-left">Ações</h6>
 
                             <a class="dropdown-item" href="{{ route('registration.show',  $registration) }}">
-                                <i class="fas fa-edit"></i>
+                                <i class="fa fa-info-circle" aria-hidden="true"></i>
                                 Informações
                             </a>
 
 
                             @if($registration->status != 'C')
-                    
-                            {{-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-cancel-{{ $registration->id }}">
-                                <i class="fas fa-edit"></i>
-                                Cancelar Matrícula
-                            </a> --}}
 
-                            
                             <a class="dropdown-item" href="{{ route('registration.edit',  $registration) }}">
                                 <i class="fas fa-edit"></i>
                                 Editar
                             </a>
-{{-- 
-                            <a class="dropdown-item" href="{{ route('registration.class.index',  $registration) }}">
-                                <i class="fas fa-edit"></i>
-                                Aulas
-                            </a> --}}
 
                             @endif
-
+{{-- 
                             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ $registration->id }}">
                                 <i class="fas fa-trash-alt"></i>
                                 Excluir
-                            </a>
+                            </a> --}}
 
                         </div>
                     
@@ -106,20 +95,6 @@
                             </x-slot>
                         </x-adminlte-modal>
 
-                        <form action="#" method="post">    
-                            <x-adminlte-modal id="modal-cancel-{{ $registration->id }}" v-centered title="Cancelar Matrícula" icon="fas fa-trash" theme="danger">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="status" value="C">
-                                <x-adminlte-textarea name="cancel_comments" rows="3" fgroup-class="col-12  col-lg-12 col-sm-6" enable-old-support></x-adminlte-textarea>
-                                <x-slot name="footerSlot">
-                                        <x-adminlte-button type="submit" icon="fa fa-trash" theme="danger" label="Cancelar"/>
-                                    </form>
-                        
-                                    <x-adminlte-button theme="light" icon="fa fa-times"  label="Fechar" data-dismiss="modal"/>
-                                </x-slot>
-                            </x-adminlte-modal>
-                        </form>
                     </div>
                 </td>
             </tr>
