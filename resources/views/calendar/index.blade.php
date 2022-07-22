@@ -54,7 +54,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modal-event" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-purple">
                 <h5 class="modal-title">Modal title</h5>
@@ -63,22 +63,7 @@
                     </button>
             </div>
             <div class="modal-body">
-                <h4 class="m-0"><b>07:00 Jorde da Silva</b></h4>
-                <div class="text-muted">
-                    <i class="fa fa-phone" aria-hidden="true"></i>
-                    (19) 998545.65487
-                </div>
-                <span class="badge badge-pill badge-warning">Matrícula vence hoje</span>
-                <hr>
-                <div class="text-muted">
-                    
-                    <div class="text-muted">
-                        <i class="fas fa-user-ninja    "></i>
-                        Gleice Reis
-                    </div>
-                </div>
-                
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde officia eius perferendis repellat harum. Tempora velit, laudantium aut odio fugit ut, officia modi exercitationem facilis quidem excepturi iusto est amet!</p>
+               
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
@@ -159,15 +144,15 @@ var SITEURL = "{{ url('/') }}";
 
                 ],
                 eventClick: function(info) {
-
-                    console.log(info)
+                    showEvent(info.event.id)
+                    // console.log(info)
                     // alert('Event: ' + info.event.title);
                     // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
                     // alert('View: ' + info.view.type);
 
                     // // change the border color just for fun
                     // info.el.style.borderColor = 'red';
-                    $('#modal-event').modal('show')
+                    
                 }
         });
 
@@ -200,8 +185,24 @@ var SITEURL = "{{ url('/') }}";
             $('#calendar-month-title').html(calendar.view.title)
         }
 
-        function getEvents() {
+        function showEvent(eventId) {
 
+            $.ajax({
+                type: "GET",
+                url: "{{ route('event.show', '') }}/" + eventId,
+              
+                // dataType: "dataType",
+                success: function (response) {
+
+                    $('#modal-event .modal-body').html(response)
+                    $('#modal-event').modal('show')
+                    console.log(response)
+                }
+            });
+        }
+
+        function getEvents() {
+            
             // alert(calendar.startParam);
             // $.ajax({
             //     type: "POST",

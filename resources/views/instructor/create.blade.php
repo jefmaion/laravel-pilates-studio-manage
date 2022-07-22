@@ -18,7 +18,7 @@
             <x-adminlte-textarea name="user[comments]" rows="3" label="Observações" fgroup-class="col-12  col-lg-6 col-sm-6" enable-old-support>{{ $user->comments }}</x-adminlte-textarea>
         </div> --}}
 
-        @include('user.instructor.form')
+        @include('instructor.form')
         <x-adminlte-button type="submit" label="Salvar"  icon="fas fa-lg fa-save"/>
         <x-package-button-link class="bg-purple" label="Voltar" theme="light"  url="{{ route('instructor.index') }}" icon="fas fa-chevron-left" />
     </form>

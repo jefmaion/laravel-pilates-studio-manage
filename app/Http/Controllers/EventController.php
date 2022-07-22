@@ -3,10 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Services\ClassesService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+
+    protected $classService;
+
+    public function __construct(ClassesService $classService)
+    {
+        $this->classService = $classService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -55,7 +63,11 @@ class EventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = $this->classService->find($id);
+
+
+
+        return view('event.resume',  compact('event'));
     }
 
     /**
@@ -99,7 +111,7 @@ class EventController extends Controller
         $json = [];
         foreach($events as $event) {
 
-            $bg = 'bg-purple disabled ';
+            $bg = 'bg-secondary border-1 ';
 
             if($event->status == 'C') {
                 $bg = 'bg-danger';
@@ -111,12 +123,12 @@ class EventController extends Controller
 
 
             $json[] = [
-                'id' => $event->id,
-                'start' => $event->date .'T'.$event->time,
-                'end' => $event->date,
-                'title' => $event->student->user->nickname . ' ',
+                'id'        => $event->id,
+                'start'     => $event->date .'T'.$event->time,
+                'end'       => $event->date,
+                'title'     => $event->student->user->name . ' ',
                 'className' => [$bg, 'border-0'],
-                'event' => $event
+                
             ];
         }
 

@@ -14,7 +14,7 @@
     <form action="{{ route('instructor.update', $instructor) }}" method="post">
         @method('PUT')
         @include('user.form', ['user' => $instructor->user])
-        @include('user.instructor.form')
+        @include('instructor.form')
         <x-adminlte-button type="submit" label="Salvar"  icon="fas fa-lg fa-save"/>
         <x-package-button-link class="bg-purple" label="Voltar" theme="light"  url="{{ route('instructor.index') }}" icon="fas fa-chevron-left" />
     </form>
