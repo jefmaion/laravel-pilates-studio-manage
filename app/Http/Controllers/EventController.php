@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Services\ClassesService;
+use App\Services\InstructorService;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
 
     protected $classService;
+    protected $instructorService;
 
-    public function __construct(ClassesService $classService)
+    public function __construct(ClassesService $classService, InstructorService $instructorService)
     {
-        $this->classService = $classService;
+        $this->classService      = $classService;
+        $this->instructorService = $instructorService;
     }
     /**
      * Display a listing of the resource.
@@ -64,9 +67,6 @@ class EventController extends Controller
     public function show($id)
     {
         $event = $this->classService->find($id);
-
-
-
         return view('event.resume',  compact('event'));
     }
 
@@ -78,7 +78,9 @@ class EventController extends Controller
      */
     public function edit($id)
     {
-        //
+        $event = $this->classService->find($id);
+        $instructors = $this->instructorService->listAll();
+        return view('event.presence',  compact('event', 'instructors'));
     }
 
     /**

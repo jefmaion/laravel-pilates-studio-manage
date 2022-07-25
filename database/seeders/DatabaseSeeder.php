@@ -27,7 +27,8 @@ class DatabaseSeeder extends Seeder
             PlanSeeder::class,
             PaymentMethodSeeder::class,
             ClassTypeSeeder::class,
-            CancelTypeSeeder::class
+            CancelTypeSeeder::class,
+            ClassStatusSeeder::class
         ]);
     }
 }

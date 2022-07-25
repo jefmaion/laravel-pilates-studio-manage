@@ -52,34 +52,10 @@
 </x-adminlte-card>
 
 
-<!-- Modal -->
-<div class="modal fade" id="modal-event" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-purple">
-                <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-            </div>
-            <div class="modal-body">
-               
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-danger">
-                    <i class="fas fa-stop-circle    "></i>
-                    Apontar Falta
-                </button>
-
-                <button type="button"  class="bg-purple btn">
-                    <i class="fa fa-check-circle" aria-hidden="true"></i>
-                    Finalizar Aula
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+<!-- Modal Resumo -->
+<div id="modal-resumo"></div>
+<!-- Modal Resumo -->
+<div id="modal-presenca"></div>
 
 <x-adminlte-modal id="modal-evsent" v-centered theme="purple" icon="fas fa-bolt" size='lg' disable-animations>
    
@@ -131,18 +107,10 @@ var SITEURL = "{{ url('/') }}";
                     minute: '2-digit',
                     omitZeroMinute: false,
                 },
-                eventSources: [
-
-                    // your event source
-                    {
+                eventSources: [{
                     url: '{{ route('event.index') }}',
                     method: 'GET',
-                    
-                    }
-
-                    // any other sources...
-
-                ],
+                }],
                 eventClick: function(info) {
                     showEvent(info.event.id)
                     // console.log(info)
@@ -194,11 +162,28 @@ var SITEURL = "{{ url('/') }}";
                 // dataType: "dataType",
                 success: function (response) {
 
-                    $('#modal-event .modal-body').html(response)
+                    setModal(response)
                     $('#modal-event').modal('show')
-                    console.log(response)
                 }
             });
+        }
+
+        function setPresence(eventId) {
+            
+            $.ajax({
+                type: "GET",
+                url: "event/" +eventId+ "/edit",
+            
+                // dataType: "dataType",
+                success: function (response) {
+                    setModal(response)
+                    $('#modal-event').modal('show')
+                }
+            });
+        }
+
+        function setModal(data) {
+            $('#modal-resumo').html("").html(data)
         }
 
         function getEvents() {
