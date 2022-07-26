@@ -17,25 +17,35 @@
 
         <div class="row mb-2">
             <div class="col-4">
-                <button type="button" class="btn btn-primary">Agendar Aula</button>
+
+                <div class="form-group">
+                  <select class="form-control" name="" id="instructor" onchange="refresh(this.value)">
+                    <option value="">(Todos os Professores)</option>
+                    @foreach($instructors as $instructor)
+                    <option value="{{ $instructor->id }}">{{ $instructor->user->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+{{-- 
+                <button type="button" class="btn bg-purple">Agendar Aula</button> --}}
             </div>
             <div class="col-4 text-center">
                 <h1 id="calendar-month-title"></h1>
             </div>
             <div class="col-4 text-right">
                 <div class="btn-group " role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary" onClick="changeTo('dayGridMonth')">Mês</button>
-                    <button type="button" class="btn btn-secondary" onClick="changeTo('timeGridWeek')">Semana</button>
-                    <button type="button" class="btn btn-secondary" onClick="changeTo('listWeek')">Lista </button>
+                    <button type="button" class="btn bg-purple" onClick="changeTo('dayGridMonth')">Mês</button>
+                    <button type="button" class="btn bg-purple" onClick="changeTo('timeGridWeek')">Semana</button>
+                    <button type="button" class="btn bg-purple" onClick="changeTo('listWeek')">Lista </button>
                   </div>
 
                   <button type="button" class="btn btn-primary" onclick="today()">Hoje</button>
 
-                  <button type="button" class="btn btn-primary" onclick="previousPeriod()">
+                  <button type="button" class="btn bg-purple" onclick="previousPeriod()">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </button>
 
-                  <button type="button" class="btn btn-primary" onclick="nextPeriod()">
+                  <button type="button" class="btn bg-purple" onclick="nextPeriod()">
                         <i class="fa fa-chevron-right" aria-hidden="true"></i>
                   </button>
             </div>
@@ -55,7 +65,17 @@
 <!-- Modal Resumo -->
 <div id="modal-resumo"></div>
 <!-- Modal Resumo -->
-<div id="modal-presenca"></div>
+
+    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" data-bacskdrop="false" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+    
+                <div class="modal-body p-0">
+                </div>
+            </div>
+        </div>    
+    </div>
+
 
 <x-adminlte-modal id="modal-evsent" v-centered theme="purple" icon="fas fa-bolt" size='lg' disable-animations>
    
@@ -110,23 +130,26 @@ var SITEURL = "{{ url('/') }}";
                 eventSources: [{
                     url: '{{ route('event.index') }}',
                     method: 'GET',
+                    extraParams: function () { // a function that returns an object
+                                return {
+                                    ei: $('#instructor').val()
+                                }
+
+                            },
                 }],
                 eventClick: function(info) {
                     showEvent(info.event.id)
-                    // console.log(info)
-                    // alert('Event: ' + info.event.title);
-                    // alert('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
-                    // alert('View: ' + info.view.type);
-
-                    // // change the border color just for fun
-                    // info.el.style.borderColor = 'red';
-                    
-                }
+                }  
         });
+
 
         calendar.render();
         setPeriodName()
         getEvents();
+
+        function refresh(value) {
+            calendar.refetchEvents()
+        }
 
 
         function changeTo(value) {
@@ -163,7 +186,9 @@ var SITEURL = "{{ url('/') }}";
                 success: function (response) {
 
                     setModal(response)
-                    $('#modal-event').modal('show')
+                    // $('#modal-event').modal('show')
+                    $('#modal-default').modal('show')
+
                 }
             });
         }
@@ -172,18 +197,51 @@ var SITEURL = "{{ url('/') }}";
             
             $.ajax({
                 type: "GET",
-                url: "event/" +eventId+ "/edit",
+                url: "event/" +eventId+ "/presence",
             
                 // dataType: "dataType",
                 success: function (response) {
                     setModal(response)
-                    $('#modal-event').modal('show')
+                    // $('#modal-event').modal('show')
+                    $('#modal-default').modal('show')
+                }
+            });
+        }
+
+        function setAbsense(eventId) {
+            
+            $.ajax({
+                type: "GET",
+                url: "event/" +eventId+ "/absense",
+            
+                // dataType: "dataType",
+                success: function (response) {
+                    setModal(response)
+                    // $('#modal-event').modal('show')
+                    $('#modal-default').modal('show')
+                }
+            });
+        }
+
+        function rescheduleClass(eventId) {
+            $.ajax({
+                type: "GET",
+                url: "event/" +eventId+ "/reschedule",
+            
+                // dataType: "dataType",
+                success: function (response) {
+                    setModal(response)
+                    // $('#modal-event').modal('show')
+                    $('#modal-default').modal('show')
                 }
             });
         }
 
         function setModal(data) {
-            $('#modal-resumo').html("").html(data)
+            //  $('#modal-resumo').html("").html(data)
+            // $('body').append(data)
+
+            $('#modal-default .modal-body').html("").html(data)
         }
 
         function getEvents() {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClassEnum;
 use App\Models\Classes;
 use App\Services\ClassesService;
 use App\Services\InstructorService;
@@ -25,12 +26,14 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-
         
+        $events = Classes::with(['student', 'instructor'])->whereDate('date', '>=', $request->start)->whereDate('date', '<=', $request->end)->when(
+            $request->ei, function($query) use($request)  {
+                $query->where('instructor_id', $request->ei);
+            })->get();
 
-        $events = Classes::with(['student', 'instructor'])->whereDate('date', '>=', $request->start)
-            ->whereDate('date', '<=', $request->end)
-            ->get();
+
+  
 
             $events = $this->prepareEvents($events);
 
@@ -80,7 +83,24 @@ class EventController extends Controller
     {
         $event = $this->classService->find($id);
         $instructors = $this->instructorService->listAll();
-        return view('event.presence',  compact('event', 'instructors'));
+        $status = ClassEnum::Status_Executed;
+        return view('event.presence',  compact('event', 'instructors', 'status'));
+    }
+
+    public function presence($id)
+    {
+        $event = $this->classService->find($id);
+        $instructors = $this->instructorService->listAll();
+        $status = ClassEnum::Status_Executed;
+        return view('event.presence',  compact('event', 'instructors', 'status'));
+    }
+
+    public function absense($id)
+    {
+        $event = $this->classService->find($id);
+        $instructors = $this->instructorService->listAll();
+        $status = ClassEnum::Status_Executed;
+        return view('event.absense',  compact('event', 'instructors', 'status'));
     }
 
     /**
@@ -92,7 +112,14 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $class = $this->classService->find($id);
+        $data = $request->except(['_method', '_token']);
+
+        $this->classService->setPresence($class, $data);
+
+        return redirect()->route('calendar.index');
+
     }
 
     /**
@@ -106,6 +133,24 @@ class EventController extends Controller
         //
     }
 
+    public function reschedule($id)
+    {
+        $event = $this->classService->find($id);
+        $instructors = $this->instructorService->listAll();
+        return view('event.reschedule',  compact('event', 'instructors'));
+    }
+
+    public function rescheduleStore(Request $request, $id)
+    {
+       
+        $class = $this->classService->find($id);
+        $data = $request->except(['_token']);
+
+
+        $this->classService->reschedule($class, $data);
+
+        return redirect()->route('calendar.index');
+    }
 
 
     private function prepareEvents($events) {
@@ -113,23 +158,50 @@ class EventController extends Controller
         $json = [];
         foreach($events as $event) {
 
-            $bg = 'bg-secondary border-1 ';
+            $bg = '';
 
-            if($event->status == 'C') {
-                $bg = 'bg-danger';
+            if($event->class_type == ClassEnum::Type_RepositionClass) {
+                $bg = 'bg-purple';
             }
 
-            if($event->status == 'E') {
-                $bg = 'bg-success';
+            if($event->class_type == ClassEnum::Type_FreeClass) {
+                $bg = 'bg-info';
             }
+
+
+            if($event->class_type == ClassEnum::Type_ExperimentalClass) {
+                $bg = 'bg-outline-warning';
+            }
+
+
+            // if($event->status == ClassEnum::Status_Executed) {
+            //     $bg = 'bg-olive';
+            // }
+
+            // if($event->status == ClassEnum::Status_AbsensedJustified) {
+            //     $bg = 'bg-orange';
+            // }
+
+            // if($event->status == ClassEnum::Status_Absensed) {
+            //     $bg = 'bg-danger';
+            // }
+
+            // if($event->status == ClassEnum::Status_Executed) {
+            //     $bg = 'bg-success';
+            // }
+
+            // if($event->status == 'E') {
+            //     $bg = 'bg-success';
+            // }
 
 
             $json[] = [
                 'id'        => $event->id,
                 'start'     => $event->date .'T'.$event->time,
                 'end'       => $event->date,
-                'title'     => $event->student->user->name . ' ',
+                'title'     => $event->student->user->name,
                 'className' => [$bg, 'border-0'],
+                'icon' => '<span class="badge badge-pill badge-secondary">'.$event->class_type.'</span>'
                 
             ];
         }

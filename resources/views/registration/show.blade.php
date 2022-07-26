@@ -204,7 +204,7 @@
                         </td>
 
                         <td>
-                            {{ $class->classType->name}}
+                            {{ $class->class_type}}
                         </td>
 
                         <td>

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\ClassEnum;
+use App\Enums\ClassTypeEnum;
 use App\Models\Registration;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -63,7 +65,8 @@ class RegistrationService extends BaseService {
 
 
         $registration->update($data);
-        $registration->classes()->where('status', 'A')->delete();
+        $registration->classes()->classParent()->where('status', ClassEnum::Status_Programmed)->delete();
+        $registration->classes()->where('status', ClassEnum::Status_Programmed)->delete();
         $registration->transactions()->whereNull('is_payed')->forceDelete();
 
         // $this->updateRegistration($registration, $data);
@@ -96,22 +99,20 @@ class RegistrationService extends BaseService {
         foreach($registration->weekClasses as $weekClass) {
 
             $startTime = Carbon::createFromFormat('Y-m-d', $registration->date_start);
-            $endTime = Carbon::createFromFormat('Y-m-d', $registration->date_end);
+            $endTime   = Carbon::createFromFormat('Y-m-d', $registration->date_end);
         
             while ($startTime->lt($endTime)) {
                 
                 if(in_array($startTime->dayOfWeek, [$weekClass->class_weekday-1])){
-
                     $registration->classes()->create([
-                        'date' => $startTime,
-                        'time' => $weekClass->class_time,
-                        'instructor_id' => $weekClass->instructor_id,
+                        'date'            => $startTime,
+                        'time'            => $weekClass->class_time,
+                        'instructor_id'   => $weekClass->instructor_id,
                         'registration_id' => $registration->id,
-                        'student_id' => $registration->student_id,
-                        'class_type_id' => 1,
-                        'status' => 'A'
+                        'student_id'      => $registration->student_id,
+                        'class_type'      => ClassEnum::Type_NormalClass,
+                        'status'          => ClassEnum::Status_Programmed
                     ]);
-
                 }
         
                 $startTime->addDay();

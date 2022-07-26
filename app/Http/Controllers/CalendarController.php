@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\InstructorService;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
+
+    protected $instructorService;
+
+    public function __construct(InstructorService $instructorService)
+    {
+        $this->instructorService = $instructorService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +21,8 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        return view('calendar.index');
+        $instructors = $this->instructorService->listAll();
+        return view('calendar.index', compact('instructors'));
     }
 
     /**
@@ -80,5 +89,17 @@ class CalendarController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function list() {
+        
+    }
+
+    public function presence() {
+
+    }
+
+    public function absense() {
+
     }
 }

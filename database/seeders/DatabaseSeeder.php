@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PlanSeeder::class,
             PaymentMethodSeeder::class,
-            ClassTypeSeeder::class,
+            // ClassTypeSeeder::class,
             CancelTypeSeeder::class,
-            ClassStatusSeeder::class
+            // ClassStatusSeeder::class
         ]);
     }
 }

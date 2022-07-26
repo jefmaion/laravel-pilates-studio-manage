@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\ClassEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use function PHPUnit\Framework\isNull;
 
 class Classes extends Model
 {
@@ -25,9 +25,11 @@ class Classes extends Model
     ];
 
     protected $classStatusData = [
-        'A' => 'Agendada',
+        ClassEnum::Status_Programmed => 'Aula Agendada',
+        ClassEnum::Status_Absensed => 'Falta',
+        ClassEnum::Status_AbsensedJustified => 'Falta Justificada',
         'C' => 'Cancelada',
-        'E' => 'Executada'
+        ClassEnum::Status_Executed => 'Aula Realizada'
     ];
 
     public function getClassStatusAttribute()
@@ -52,6 +54,10 @@ class Classes extends Model
         return date('d/m/Y', strtotime($this->date));
     }
 
+    public function getExtenseDateAttribute() {
+        return $this->getWeekdayNameAttribute() . ', ' .date('d', strtotime($this->date)) .' '.date('M', strtotime($this->date)).' '.date('Y', strtotime($this->date));
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class);
@@ -72,8 +78,12 @@ class Classes extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function classType()
-    {
-        return $this->belongsTo(ClassType::class);
+    public function classParent() {
+        return $this->belongsTo(Classes::class, 'class_parent_id');
     }
+
+    // public function classType()
+    // {
+    //     return $this->belongsTo(ClassType::class);
+    // }
 }

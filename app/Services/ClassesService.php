@@ -16,4 +16,14 @@ class ClassesService extends BaseService {
         return $student->classes();
     }
 
+    public function setPresence(Classes $class, $data) {
+        return $class->fill($data)->save();
+    }
+
+    public function reschedule(Classes $class, $data) {
+        $newClass = $class->replicate();
+        $newClass->fill($data);
+        return $newClass->save();
+    }
+
 }
