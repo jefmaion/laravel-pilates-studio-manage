@@ -52,25 +52,25 @@ final class ClassEnum {
         'AA' => [
             'code'  => 'AA',
             'label' => 'Aula Programada',
-            'color' => 'info'
+            'color' => 'info-light'
         ],
 
         'PP'=> [
             'code'  => 'PP',
             'label' => 'Aula Executada',
-            'color' => 'success'
+            'color' => 'olive-light'
         ],
 
         'FF'=> [
             'code'  => 'FF',
             'label' => 'Falta (SEM AVISO)',
-            'color' => 'danger'
+            'color' => 'danger-light'
         ],
 
         'FJ'=> [
             'code'  => 'FJ',
             'label' => 'Falta (COM AVISO)',
-            'color' => 'secondary'
+            'color' => 'danger-light'
         ],
 
     ];

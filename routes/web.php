@@ -35,8 +35,10 @@ Route::resource('instructor', InstructorController::class);
 Route::resource('plan', PlanController::class);
 Route::resource('calendar', CalendarController::class);
 Route::resource('event', EventController::class);
+
 Route::get('event/{event}/presence', [EventController::class, 'presence'])->name('event.presence');
 Route::get('event/{event}/absense', [EventController::class, 'absense'])->name('event.absense');
+Route::put('event/{event}/absense', [EventController::class, 'absenseStore'])->name('event.absense.update');
 Route::get('event/{event}/reschedule', [EventController::class, 'reschedule'])->name('event.reschedule');
 Route::post('event/{event}/reschedule', [EventController::class, 'rescheduleStore'])->name('event.reschedule.store');
 

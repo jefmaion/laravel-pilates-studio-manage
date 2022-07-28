@@ -7,12 +7,11 @@
     <i class="fas fa-circle  mr-2 text-success  "></i>  {{ $event->class_type }} - {{ $event->classStatus }} 
 </p> --}}
 
+<span class="float-rsight badge badge-pill bg-{{ $event->classStatusColor }} ">{{ $event->classStatus }} </span>
 
 <h3 class="mb-2 font-weighst-light text-dark">
      <strong>{{ $event->student->user->name }}</strong>  
-     <small>
-        <span class="float-right badge badge-pill bg-{{ $event->classStatusColor }} ">{{ $event->classStatus }} </span>
-     </small>
+     
 </h3>
 
 

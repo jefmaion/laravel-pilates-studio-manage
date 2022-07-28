@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ClassEnum;
+use App\Http\Requests\EventAbsenseRequest;
 use App\Http\Requests\EventUpdateRequest;
 use App\Models\Classes;
 use App\Services\ClassesService;
@@ -113,6 +114,22 @@ class EventController extends Controller
         return view('event.absense',  compact('event', 'instructors', 'status'));
     }
 
+    public function absenseStore(EventAbsenseRequest $request, $id)
+    {
+
+
+        $class = $this->classService->find($id);
+        $data = $request->except(['_method', '_token']);
+
+        $this->classService->setPresence($class, $data);
+
+
+        // $event = $this->classService->find($id);
+        // $instructors = $this->instructorService->listAll();
+        // $status = ClassEnum::Status_Executed;
+        // return view('event.absense',  compact('event', 'instructors', 'status'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -169,7 +186,7 @@ class EventController extends Controller
         foreach($events as $event) {
 
         
-            $typeClass = '<span class="badge badge-pill bg-warning text-white mx-1">'.$event->class_type.'</span>';
+            $typeClass = '<span class="badge badge-pill bg-dark text-warning mx-1">'.$event->class_type.'</span>';
 
             if($event->class_type == ClassEnum::Type_NormalClass) {
                 $typeClass = " ";
@@ -190,10 +207,11 @@ class EventController extends Controller
                 'title'     => $event->student->user->nickname,
                 'time' => substr($event->time,0,5),
                 'className' => [$bg, 'border-0'],
-                'html' => '<span>'.
-                                $typeClass.
+                'html' => '<span class="text-white">'.
+                                
                                 '<b>'.substr($event->time,0,5).'</b> ' .
                                 $event->student->user->nickname. 
+                                $typeClass.
                             '</span>'
                 
             ];

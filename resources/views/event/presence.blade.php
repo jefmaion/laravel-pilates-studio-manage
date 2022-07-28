@@ -3,7 +3,7 @@
         <div class="modal-content">
 
             <div class="modal-body p-0">
-                <div class="modal-header bg-olive">
+                <div class="modal-header bg-purple">
                     <strong> <i class="fa fa-check-circle" aria-hidden="true"></i> Registrar Presença</strong>
 
                     <button class="close" data-dismiss="modal" aria-label="Close">
@@ -26,6 +26,8 @@
                             <x-adminlte-options :options="[$instructor->id => $instructor->user->name]" :selected="$event->instructor_id" />
                             @endforeach
                         </x-adminlte-select2>
+                        <br>
+                        
 
                         <x-adminlte-textarea name="comments" rows="3" label="Comentários da aula" fgroup-class="" enable-old-support></x-adminlte-textarea>
 
@@ -38,7 +40,7 @@
                     <i class="fa fa-times" aria-hidden="true"></i> 
                     Fechar
                 </button>
-                <button type="button" class="bg-olive btn" onclick="sendForms('form-presence')">
+                <button type="button" class="bg-purple btn" onclick="sendForms('form-presence')">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                     Salvar
                 </button>

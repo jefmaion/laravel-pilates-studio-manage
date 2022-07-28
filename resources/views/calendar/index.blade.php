@@ -30,7 +30,7 @@
             <div class="col">
 
                 <div class="form-group">
-                  <select class="form-control select2" name="" id="instructor" onchange="refresh(this.value)">
+                  <select class="form-control select2" name="" id="filter-instructor" onchange="refresh(this.value)">
                     <option value="">(Todos os Professores)</option>
                     @foreach($instructors as $instructor)
                     <option value="{{ $instructor->id }}">{{ $instructor->user->name }}</option>
@@ -44,7 +44,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <select class="form-control select2" name="" id="student" onchange="refresh(this.value)">
+                    <select class="form-control select2" name="" id="filter-student" onchange="refresh(this.value)">
                       <option value="">(Todos os Alunos)</option>
                       @foreach($registrations as $registration)
                       <option value="{{ $registration->student->id }}">{{ $registration->student->user->name }}</option>
@@ -54,7 +54,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <select class="form-control select2" name="" id="status" onchange="refresh(this.value)">
+                    <select class="form-control select2" name="" id="filter-status" onchange="refresh(this.value)">
                       <option value="">(Todos)</option>
                       @foreach($statuses as $key => $status)
                       <option value="{{ $key }}">{{ $status['label'] }}</option>
@@ -69,7 +69,7 @@
                 <div class="btn-group " role="group" aria-label="Basic example">
                     <button type="button" class="btn bg-purple" onClick="changeTo('dayGridMonth')">Mês</button>
                     <button type="button" class="btn bg-purple" onClick="changeTo('timeGridWeek')">Semana</button>
-                    {{-- <button type="button" class="btn bg-purple" onClick="changeTo('listWeek')">Lista </button> --}}
+                    <button type="button" class="btn bg-purple" onClick="changeTo('listWeek')">Lista </button>
                   </div>
 
                   
@@ -127,7 +127,9 @@ var SITEURL = "{{ url('/') }}";
                 slotMaxTime:'21:00:00',
                 nowIndicator:true,
                 height: "auto",
-                eventMinHeight:20,
+                slotEventOverlap:false,
+                slotDuration:'00:30:00',
+                eventMaxStack:3,
                 hiddenDays: [ 0 ],
                 allDaySlot: false,
                 slotLabelFormat:{
@@ -140,9 +142,9 @@ var SITEURL = "{{ url('/') }}";
                     method: 'GET',
                     extraParams: function () { // a function that returns an object
                         return {
-                            instructor_id: $('#instructor').val(),
-                            student_id: $('#student').val(),
-                            status: $('#status').val(),
+                            instructor_id: $('#filter-instructor').val(),
+                            student_id: $('#filter-student').val(),
+                            status: $('#filter-status').val(),
                         }
 
                     },
@@ -235,6 +237,7 @@ var SITEURL = "{{ url('/') }}";
 
         function sendForms(form) {
             var form = $('#' + form)
+            $("#modal-container .alert").addClass('d-none')
             $.ajax({
                 type: $(form).attr('method'),
                 url: $(form).attr('action'),
@@ -248,10 +251,10 @@ var SITEURL = "{{ url('/') }}";
                     if( reject.status === 422 ) {
                         var errors = $.parseJSON(reject.responseText);
 
-                        console.log(errors)
-
-                        $.each(errors, function (key, val) {
-                            $("#" + key + "_error").text(val[0]);
+                        $.each(errors.errors, function (key, val) {
+                            $("#" + key).addClass('is-invalid')
+                            $("#modal-container .alert").html(val[0])
+                            $("#modal-container .alert").removeClass('d-none')
                         });
                     }
                 }
