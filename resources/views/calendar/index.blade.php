@@ -9,37 +9,70 @@
     </x-package-pageheader>
 @stop
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+@stop
+
 @section('content')
+
 
 <x-adminlte-card theme="purple" theme-mode="outline">
 <div class="row">
     <div class="col-12">
+        
+        
 
         <div class="row mb-2">
-            <div class="col-4">
+
+            <div class="col-4 text-left">
+                <h1 id="calendar-month-title"></h1>
+            </div>
+            <div class="col">
 
                 <div class="form-group">
-                  <select class="form-control" name="" id="instructor" onchange="refresh(this.value)">
+                  <select class="form-control select2" name="" id="instructor" onchange="refresh(this.value)">
                     <option value="">(Todos os Professores)</option>
                     @foreach($instructors as $instructor)
                     <option value="{{ $instructor->id }}">{{ $instructor->user->name }}</option>
                     @endforeach
                   </select>
                 </div>
+
+                
 {{-- 
                 <button type="button" class="btn bg-purple">Agendar Aula</button> --}}
             </div>
-            <div class="col-4 text-center">
-                <h1 id="calendar-month-title"></h1>
+            <div class="col">
+                <div class="form-group">
+                    <select class="form-control select2" name="" id="student" onchange="refresh(this.value)">
+                      <option value="">(Todos os Alunos)</option>
+                      @foreach($registrations as $registration)
+                      <option value="{{ $registration->student->id }}">{{ $registration->student->user->name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
             </div>
+            <div class="col">
+                <div class="form-group">
+                    <select class="form-control select2" name="" id="status" onchange="refresh(this.value)">
+                      <option value="">(Todos)</option>
+                      @foreach($statuses as $key => $status)
+                      <option value="{{ $key }}">{{ $status['label'] }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+            </div>
+           
             <div class="col-4 text-right">
+                
+                <button type="button" class="btn btn-primary" onclick="today()">Hoje</button>
                 <div class="btn-group " role="group" aria-label="Basic example">
                     <button type="button" class="btn bg-purple" onClick="changeTo('dayGridMonth')">Mês</button>
                     <button type="button" class="btn bg-purple" onClick="changeTo('timeGridWeek')">Semana</button>
-                    <button type="button" class="btn bg-purple" onClick="changeTo('listWeek')">Lista </button>
+                    {{-- <button type="button" class="btn bg-purple" onClick="changeTo('listWeek')">Lista </button> --}}
                   </div>
 
-                  <button type="button" class="btn btn-primary" onclick="today()">Hoje</button>
+                  
 
                   <button type="button" class="btn bg-purple" onclick="previousPeriod()">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
@@ -59,42 +92,16 @@
     </div>
 </div>
 
+<div id="modal-container"></div>
+
 </x-adminlte-card>
-
-
-<!-- Modal Resumo -->
-<div id="modal-resumo"></div>
-<!-- Modal Resumo -->
-
-    <div class="modal fade" id="modal-default" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" data-bacskdrop="false" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-    
-                <div class="modal-body p-0">
-                </div>
-            </div>
-        </div>    
-    </div>
-
-
-<x-adminlte-modal id="modal-evsent" v-centered theme="purple" icon="fas fa-bolt" size='lg' disable-animations>
-   
-    <h4>
-        <i class="fa fa-user" aria-hidden="true"></i>
-        Jefferson Silveira
-    </h4>
-
-     <div>
-        <i class="fa fa-user" aria-hidden="true"></i>
-        Joana Clauida
-    </div>
-    
-</x-adminlte-modal>
 
 @stop
 
 
 @section('plugins.FullCalendar', true)
+@section('plugins.Select2', true)
+
 
 @section('js')
 <script>
@@ -118,8 +125,9 @@ var SITEURL = "{{ url('/') }}";
                 headerToolbar: false,
                 slotMinTime:'07:00:00',
                 slotMaxTime:'21:00:00',
-                
+                nowIndicator:true,
                 height: "auto",
+                eventMinHeight:20,
                 hiddenDays: [ 0 ],
                 allDaySlot: false,
                 slotLabelFormat:{
@@ -131,26 +139,34 @@ var SITEURL = "{{ url('/') }}";
                     url: '{{ route('event.index') }}',
                     method: 'GET',
                     extraParams: function () { // a function that returns an object
-                                return {
-                                    ei: $('#instructor').val()
-                                }
+                        return {
+                            instructor_id: $('#instructor').val(),
+                            student_id: $('#student').val(),
+                            status: $('#status').val(),
+                        }
 
-                            },
+                    },
                 }],
                 eventClick: function(info) {
                     showEvent(info.event.id)
-                }  
+                } ,
+                eventContent: function(arg) {
+                    event = arg.event
+                    data = arg.event.extendedProps
+                    return {
+                        html: data.html
+                    } 
+                }
         });
 
 
         calendar.render();
         setPeriodName()
-        getEvents();
+
 
         function refresh(value) {
             calendar.refetchEvents()
         }
-
 
         function changeTo(value) {
             calendar.changeView(value)
@@ -177,48 +193,32 @@ var SITEURL = "{{ url('/') }}";
         }
 
         function showEvent(eventId) {
-
             $.ajax({
                 type: "GET",
                 url: "{{ route('event.show', '') }}/" + eventId,
-              
-                // dataType: "dataType",
                 success: function (response) {
-
-                    setModal(response)
-                    // $('#modal-event').modal('show')
-                    $('#modal-default').modal('show')
-
+                    showModal('modal-event', response);
                 }
             });
         }
 
         function setPresence(eventId) {
-            
             $.ajax({
                 type: "GET",
                 url: "event/" +eventId+ "/presence",
-            
-                // dataType: "dataType",
                 success: function (response) {
-                    setModal(response)
-                    // $('#modal-event').modal('show')
-                    $('#modal-default').modal('show')
+                    showModal('modal-presence', response);
                 }
+                
             });
         }
 
         function setAbsense(eventId) {
-            
             $.ajax({
                 type: "GET",
                 url: "event/" +eventId+ "/absense",
-            
-                // dataType: "dataType",
                 success: function (response) {
-                    setModal(response)
-                    // $('#modal-event').modal('show')
-                    $('#modal-default').modal('show')
+                    showModal('modal-absense', response);
                 }
             });
         }
@@ -227,39 +227,45 @@ var SITEURL = "{{ url('/') }}";
             $.ajax({
                 type: "GET",
                 url: "event/" +eventId+ "/reschedule",
-            
-                // dataType: "dataType",
                 success: function (response) {
-                    setModal(response)
-                    // $('#modal-event').modal('show')
-                    $('#modal-default').modal('show')
+                    showModal('modal-reschedule', response);
                 }
             });
         }
 
-        function setModal(data) {
-            //  $('#modal-resumo').html("").html(data)
-            // $('body').append(data)
+        function sendForms(form) {
+            var form = $('#' + form)
+            $.ajax({
+                type: $(form).attr('method'),
+                url: $(form).attr('action'),
+                data: $(form).serialize(),
+                success: function (response) {
+                    $('.modal').modal('hide')
+                    refresh(null)
+                },
+                error: function (reject) {
+                    console.log(reject)
+                    if( reject.status === 422 ) {
+                        var errors = $.parseJSON(reject.responseText);
 
-            $('#modal-default .modal-body').html("").html(data)
+                        console.log(errors)
+
+                        $.each(errors, function (key, val) {
+                            $("#" + key + "_error").text(val[0]);
+                        });
+                    }
+                }
+            });
         }
 
-        function getEvents() {
-            
-            // alert(calendar.startParam);
-            // $.ajax({
-            //     type: "POST",
-            //     url: "{{ route('event.index') }}",
-            //     data: {
-            //         start: calendar.view.start,
-            //         end: calendar.view.end
-            //     },
-            //     // dataType: "dataType",
-            //     success: function (response) {
-            //         console.log(response)
-            //     }
-            // });
+
+        function showModal(modalId, data) {
+            $('#modal-container #' + modalId).remove();
+            $('#modal-container').append(data);
+            $('#modal-container .select2').select2( {"theme":"bootstrap4"} );
+            $('#' + modalId).modal('show');
         }
 
+        
 </script>
 @endsection

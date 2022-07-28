@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ClassEnum;
 use App\Services\InstructorService;
+use App\Services\RegistrationService;
 use Illuminate\Http\Request;
 
 class CalendarController extends Controller
 {
 
     protected $instructorService;
+    protected $registrationService;
 
-    public function __construct(InstructorService $instructorService)
+    public function __construct(InstructorService $instructorService, RegistrationService $registrationService)
     {
         $this->instructorService = $instructorService;
+        $this->registrationService = $registrationService;
     }
     /**
      * Display a listing of the resource.
@@ -22,7 +26,9 @@ class CalendarController extends Controller
     public function index()
     {
         $instructors = $this->instructorService->listAll();
-        return view('calendar.index', compact('instructors'));
+        $registrations = $this->registrationService->listAll();
+        $statuses = ClassEnum::Status;
+        return view('calendar.index', compact('instructors', 'registrations', 'statuses'));
     }
 
     /**

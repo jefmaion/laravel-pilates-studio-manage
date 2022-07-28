@@ -38,6 +38,11 @@ class Student extends Model
         return $this->hasOne(Registration::class)->where('status', 'A');
     }
 
+    public function hasDebit() {
+        return  $this->transactions()->whereNull('pay_day')->whereDate('date', '<', date('Y-m-d'));
+        
+    }
+
 
     public function transactions() {
         return $this->hasMany(Transaction::class);

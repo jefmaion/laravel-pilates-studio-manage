@@ -25,24 +25,44 @@ class Classes extends Model
     ];
 
     protected $classStatusData = [
-        ClassEnum::Status_Programmed => 'Aula Agendada',
-        ClassEnum::Status_Absensed => 'Falta',
+        ClassEnum::Status_Programmed        => 'Aula Agendada',
+        ClassEnum::Status_Absensed          => 'Falta',
         ClassEnum::Status_AbsensedJustified => 'Falta Justificada',
-        'C' => 'Cancelada',
-        ClassEnum::Status_Executed => 'Aula Realizada'
+        ClassEnum::Status_Executed          => 'Aula Realizada'
     ];
 
     public function getClassStatusAttribute()
     {
-
-        if (!$this->status) {
-            return $this->classStatusData['A'];
-        }
-
-        return $this->classStatusData[$this->status];
+        return ClassEnum::Status[$this->status]['label'];
     }
 
-    
+    public function getClassStatusColorAttribute()
+    {
+        return ClassEnum::Status[$this->status]['color'];
+    }
+
+    public function getClassTypeNameAttribute()
+    {
+        return ClassEnum::Type[$this->class_type]['label'];
+    }
+
+    public function getCanResheduleAttribute() {
+        $props = ['FJ'];
+        return (in_array($this->status, $props)) ? true : false;
+    }
+
+    public function getIsMainInstructorAttribute() {
+        if(!$this->instructor_id_executed) {
+            return true;
+        }
+
+        return ($this->instructor_id_executed == $this->instructor_id) ? true : false;
+    }
+
+    public function getInstructorRealAttribute() {
+        return ($this->getIsMainInstructorAttribute()) ? $this->instructor : $this->instructorExecuted;
+    }
+
 
     public function getWeekdayNameAttribute()
     {

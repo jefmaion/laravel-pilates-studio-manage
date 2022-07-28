@@ -1,38 +1,38 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// Admit-LTE Bug Fix
+// go to this Directory->
+// node_modules\admin-lte\build\scss\mixins\_backgrounds.scss
 
-// Variables
-@import 'variables';
+// replace "&.bg-#{$name}"  to ".bg-#{$name}"
 
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
-@import '~@fortawesome/fontawesome-free/css/all.css';
-// OverlayScrollbars
-@import '~overlayscrollbars/css/OverlayScrollbars.css';
-// iCheck
-@import '~icheck-bootstrap/icheck-bootstrap.css';
+// $blue: #0073b7 !default;
+// $lightblue: #3c8dbc !default;
+// $navy: #001f3f !default;
+// $teal: #39cccc !default;
+// $olive: #3d9970 !default;
+// $lime: #01ff70 !default;
+// $orange: #ff851b !default;
+// $fuchsia: #f012be !default;
+// $purple: #605ca8 !default;
+// $maroon: #d81b60 !default;
+// $black: #111 !default;
+// $gray-x-light: #d2d6de !default;
 
+@import "~admin-lte/build/scss/adminlte";
 
+// Custom Theme
+$theme-colors: (
+  "olive-light": rgba($olive, .65),
+  "purple-light": rgba($purple, .65),
 
-// AdminLTE
-@import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
+  "danger-light": rgba($danger, .65),
+  "warning-light": rgba($warning, .65),
+  "primary-light": rgba($primary, .65),
+  "info-light": rgba($info, .65),
+  "success-light": rgba($success, .65),
+  "dark-light": rgba($dark, .65),
+  "secondary-light": rgba($secondary, .65),
+  
 
+);
 
-
-
-// @import "~bootstrap/scss/_variables";
-
-// $theme-colors: (
-//   "roxo": $purple
-// );
-
-// @import "~bootstrap/scss/_variables";
-
-
-
-// Bootstrap
-// Already imported by AdminLTE
-//@import '~bootstrap/scss/bootstrap';
-
-// Bootstrap
-// @import '~bootstrap/scss/bootstrap';
+@import "~admin-lte/build/scss/adminlte";

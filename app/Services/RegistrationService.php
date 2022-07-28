@@ -65,7 +65,6 @@ class RegistrationService extends BaseService {
 
 
         $registration->update($data);
-        $registration->classes()->classParent()->where('status', ClassEnum::Status_Programmed)->delete();
         $registration->classes()->where('status', ClassEnum::Status_Programmed)->delete();
         $registration->transactions()->whereNull('is_payed')->forceDelete();
 

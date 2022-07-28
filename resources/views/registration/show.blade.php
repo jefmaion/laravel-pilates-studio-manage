@@ -187,7 +187,7 @@
             </div>
 
             <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-                <x-adminlte-datatable id="table-class" :heads="['Data', 'Horario', 'Professor','Tipo de Aula', 'Status', 'Professor Minist']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
+                <x-adminlte-datatable id="table-class" :heads="['Data', 'Horario', 'Professor','Tipo de Aula', 'Status']" :config="['order' => [], 'language' => ['url' =>  asset('js/datatable.ptbr.json')]]"  head-thsme="light" themse="light" striped hoverable >
                     @foreach($registration->classes as $class)
                     <tr>
                         <td>
@@ -200,20 +200,22 @@
                         </td>
 
                         <td>
-                            {{ $class->instructor->user->name }}
+                            {{ $class->instructorReal->user->name }}
+                            
+                            @if(!$class->IsMainInstructor)
+                                <i class="text-muted fas fa-exchange-alt    "></i>
+                            @endif
                         </td>
 
                         <td>
-                            {{ $class->class_type}}
+                            {{ $class->classTypeName}}
                         </td>
 
                         <td>
-                            <span class="badge badge-pill badge-{{ (($class->status == "A") ? 'secondary' : (($class->status == 'E') ? 'success' : 'danger')) }}">{{ $class->classStatus }}</span>
+                            <span class="badge badge-pill bg-{{ $class->classStatusColor }}">{{ $class->classStatus }}</span>
                         </td>
 
-                        <td>
-                            {{ $class->instructorExecuted->user->name ?? '' }}
-                        </td>
+                      
                     </tr>
                     @endforeach
                 </x-adminlte-datatable>

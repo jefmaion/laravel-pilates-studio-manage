@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ClassEnum;
+use App\Http\Requests\EventUpdateRequest;
 use App\Models\Classes;
 use App\Services\ClassesService;
 use App\Services\InstructorService;
@@ -27,10 +28,19 @@ class EventController extends Controller
     public function index(Request $request)
     {
         
-        $events = Classes::with(['student', 'instructor'])->whereDate('date', '>=', $request->start)->whereDate('date', '<=', $request->end)->when(
-            $request->ei, function($query) use($request)  {
-                $query->where('instructor_id', $request->ei);
-            })->get();
+        $events = Classes::with(['student', 'instructor'])
+                    ->whereDate('date', '>=', $request->start)
+                    ->whereDate('date', '<=', $request->end)
+                    ->when($request->instructor_id, function($query) use($request)  {
+                        $query->where('instructor_id', $request->instructor_id);
+                    })
+                    ->when($request->student_id, function($query) use($request)  {
+                        $query->where('student_id', $request->student_id);
+                    })
+                    ->when($request->status, function($query) use($request)  {
+                        $query->where('status', $request->status);
+                    })
+                    ->get();
 
 
   
@@ -110,7 +120,7 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EventUpdateRequest $request, $id)
     {
         
         $class = $this->classService->find($id);
@@ -118,7 +128,7 @@ class EventController extends Controller
 
         $this->classService->setPresence($class, $data);
 
-        return redirect()->route('calendar.index');
+        // return redirect()->route('calendar.index');
 
     }
 
@@ -158,50 +168,33 @@ class EventController extends Controller
         $json = [];
         foreach($events as $event) {
 
-            $bg = '';
+        
+            $typeClass = '<span class="badge badge-pill bg-warning text-white mx-1">'.$event->class_type.'</span>';
 
-            if($event->class_type == ClassEnum::Type_RepositionClass) {
-                $bg = 'bg-purple';
+            if($event->class_type == ClassEnum::Type_NormalClass) {
+                $typeClass = " ";
             }
 
-            if($event->class_type == ClassEnum::Type_FreeClass) {
-                $bg = 'bg-info';
+ 
+            if($event->status) {
+
+                $bg = 'bg-' . ClassEnum::Status[$event->status]['color'];
             }
 
-
-            if($event->class_type == ClassEnum::Type_ExperimentalClass) {
-                $bg = 'bg-outline-warning';
-            }
-
-
-            // if($event->status == ClassEnum::Status_Executed) {
-            //     $bg = 'bg-olive';
-            // }
-
-            // if($event->status == ClassEnum::Status_AbsensedJustified) {
-            //     $bg = 'bg-orange';
-            // }
-
-            // if($event->status == ClassEnum::Status_Absensed) {
-            //     $bg = 'bg-danger';
-            // }
-
-            // if($event->status == ClassEnum::Status_Executed) {
-            //     $bg = 'bg-success';
-            // }
-
-            // if($event->status == 'E') {
-            //     $bg = 'bg-success';
-            // }
 
 
             $json[] = [
                 'id'        => $event->id,
                 'start'     => $event->date .'T'.$event->time,
                 'end'       => $event->date,
-                'title'     => $event->student->user->name,
+                'title'     => $event->student->user->nickname,
+                'time' => substr($event->time,0,5),
                 'className' => [$bg, 'border-0'],
-                'icon' => '<span class="badge badge-pill badge-secondary">'.$event->class_type.'</span>'
+                'html' => '<span>'.
+                                $typeClass.
+                                '<b>'.substr($event->time,0,5).'</b> ' .
+                                $event->student->user->nickname. 
+                            '</span>'
                 
             ];
         }
