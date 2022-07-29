@@ -88,6 +88,7 @@
 
     </div>
     <div class="col-12">
+
         <div id="fcalendar"></div>
     </div>
 </div>
@@ -107,6 +108,10 @@
 <script>
 
 var SITEURL = "{{ url('/') }}";
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
   
   $.ajaxSetup({
       headers: {

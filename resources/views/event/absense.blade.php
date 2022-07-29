@@ -6,7 +6,7 @@
 
 
 
-                <div class="modal-header bg-danger ">
+                <div class="modal-header bg-red-600 ">
                     <strong> <i class="fa fa-times-circle" aria-hidden="true"></i> Registrar Falta</strong>
                 
                     <button class="close" data-dismiss="modal" aria-label="Close">
@@ -25,19 +25,19 @@
                                     @method('PUT')
                 
                                 
-                                <x-adminlte-select2 label="Tipo da Falta" onchange="showReshedule(this.value)" name="status" id="status" class="select2" fgroup-class="m-0"  error-key="status"> 
+                                <x-adminlte-select2 label="Tipo da Falta"  name="status" id="status" class="select2" fgroup-class="m-0"  error-key="status"> 
                                     <option value=""></option>
                                     <option value="FJ">Com Aviso</option>
                                     <option value="FF">Sem Aviso</option>
                                 </x-adminlte-select2>
                                
-                
+                                <x-adminlte-textarea name="absense_comments" id="absense_comments" rows="3" label="Motivo" fgroup-class="" enable-old-support></x-adminlte-textarea>
                                 
 
 
-                    <div id="reshedule-class" class="d-none">
+                    {{-- <div id="reshedule-class" class="d-none">
 
-                        <x-adminlte-textarea name="absense_comments" id="absense_comments" rows="3" label="Motivo" fgroup-class="" enable-old-support></x-adminlte-textarea>
+                        
 
                                 <hr>
 
@@ -67,7 +67,7 @@
 
                             <x-adminlte-textarea name="comments" rows="3" label="Observações" fgroup-class="col-12" enable-old-support></x-adminlte-textarea>
                         </div>
-                    </div>
+                    </div> --}}
                                 
                                     <div class="alert alert-warning d-none" role="alert"></div>
                                 </form>
@@ -80,7 +80,7 @@
                     <i class="fa fa-times" aria-hidden="true"></i> 
                     Fechar
                 </button>
-                <button type="button" class="bg-danger  btn" onclick="sendForms('form-absense')">
+                <button type="button" class="bg-red-600  btn" onclick="sendForms('form-absense')">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                     Salvar
                 </button>
@@ -93,13 +93,13 @@
 
 <script>
 
-    function showReshedule(val) {
+    // function showReshedule(val) {
 
-        $('#reshedule-class').addClass('d-none')
+    //     $('#reshedule-class').addClass('d-none')
 
-        if(val == 'FJ') {
-            $('#reshedule-class').removeClass('d-none')
-        }
-    }
+    //     if(val == 'FJ') {
+    //         $('#reshedule-class').removeClass('d-none')
+    //     }
+    // }
 </script>
 

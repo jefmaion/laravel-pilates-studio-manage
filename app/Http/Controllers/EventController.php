@@ -186,7 +186,8 @@ class EventController extends Controller
         foreach($events as $event) {
 
         
-            $typeClass = '<span class="badge badge-pill bg-dark text-warning mx-1">'.$event->class_type.'</span>';
+            $typeClass = '<span class="badge badge-pill bg-dark mx-1">'.$event->class_type.'</span>';
+            $textColor = 'text-dark-400';
 
             if($event->class_type == ClassEnum::Type_NormalClass) {
                 $typeClass = " ";
@@ -194,10 +195,14 @@ class EventController extends Controller
 
  
             if($event->status) {
-
                 $bg = 'bg-' . ClassEnum::Status[$event->status]['color'];
             }
 
+            if(!strpos($bg, 'dark')) {
+                $textColor = '';
+            }
+
+            $icon = ClassEnum::Status[$event->status]['icon'];
 
 
             $json[] = [
@@ -207,11 +212,15 @@ class EventController extends Controller
                 'title'     => $event->student->user->nickname,
                 'time' => substr($event->time,0,5),
                 'className' => [$bg, 'border-0'],
-                'html' => '<span class="text-white">'.
+                'html' => '<span class="'.$textColor.'  border-0" >'.
+                                '<i class=" ml-1 '.$icon.'"></i> '.
                                 
                                 '<b>'.substr($event->time,0,5).'</b> ' .
+                                
                                 $event->student->user->nickname. 
                                 $typeClass.
+                                '<div><i><small>'.$event->comments.'</small></i></div>'.
+                                
                             '</span>'
                 
             ];

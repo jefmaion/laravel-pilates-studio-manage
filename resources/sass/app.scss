@@ -20,21 +20,25 @@
 @import "~admin-lte/build/scss/adminlte";
 
 // Custom Theme
-$theme-colors: (
-  "olive-light": rgba($olive, .65),
-  "purple-light": rgba($purple, .65),
+// $theme-colors: (
 
-  "danger-light": rgba($danger, .65),
-  "warning-light": rgba($warning, .65),
-  "primary-light": rgba($primary, .65),
-  "info-light": rgba($info, .65),
-  "success-light": rgba($success, .65),
-  "dark-light": rgba($dark, .65),
-  "secondary-light": rgba($secondary, .65),
-  "navy-light": rgba($navy, .65),
-  "lightblue-light": rgba($lightblue, .65),
+//   "success"
+
+//   "olive-light": rgba($olive, .65),
+//   "purple-light": rgba($purple, .65),
+
+//   "danger-light": rgba($danger, .65),
+//   "warning-light": rgba($warning, .65),
+//   "primary-light": rgba($primary, .65),
+//   "info-light": rgba($info, .65),
+//   "success-light": rgba($success, .65),
+//   "dark-light": rgba($dark, .65),
+//   "secondary-light": rgba($secondary, .65),
+//   "navy-light": rgba($navy, .65),
+//   "lightblue-light": rgba($lightblue, .65),
   
 
-);
+// );
+@import "custom";
 
 @import "~admin-lte/build/scss/adminlte";

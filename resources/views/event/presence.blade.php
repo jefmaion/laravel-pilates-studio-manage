@@ -3,7 +3,7 @@
         <div class="modal-content">
 
             <div class="modal-body p-0">
-                <div class="modal-header bg-purple">
+                <div class="modal-header bg-olive-600">
                     <strong> <i class="fa fa-check-circle" aria-hidden="true"></i> Registrar Presença</strong>
 
                     <button class="close" data-dismiss="modal" aria-label="Close">
@@ -40,7 +40,7 @@
                     <i class="fa fa-times" aria-hidden="true"></i> 
                     Fechar
                 </button>
-                <button type="button" class="bg-purple btn" onclick="sendForms('form-presence')">
+                <button type="button" class="bg-olive-600 btn" onclick="sendForms('form-presence')">
                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                     Salvar
                 </button>

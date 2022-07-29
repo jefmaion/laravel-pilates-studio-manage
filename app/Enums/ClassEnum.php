@@ -52,25 +52,29 @@ final class ClassEnum {
         'AA' => [
             'code'  => 'AA',
             'label' => 'Aula Programada',
-            'color' => 'info-light'
+            'color' => 'dark-200',
+            'icon' => ''
         ],
 
         'PP'=> [
             'code'  => 'PP',
             'label' => 'Aula Executada',
-            'color' => 'olive-light'
+            'color' => 'olive-600',
+            'icon' => 'fas fa-check-circle'
         ],
 
         'FF'=> [
             'code'  => 'FF',
             'label' => 'Falta (SEM AVISO)',
-            'color' => 'danger-light'
+            'color' => 'red-700',
+            'icon' => 'fas fa-times-circle'
         ],
 
         'FJ'=> [
             'code'  => 'FJ',
             'label' => 'Falta (COM AVISO)',
-            'color' => 'danger-light'
+            'color' => 'warning-600',
+            'icon' => 'fas fa-comment'
         ],
 
     ];
